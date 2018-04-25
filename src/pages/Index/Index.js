@@ -52,13 +52,11 @@ class Index extends Component {
     const isDesktop = windowWidth > sizes.s;
 
     if (props.withPostOverlay.length > 0 && isDesktop) {
-      const postEl = props.data.allMarkdownRemark.edges.find(post => post.node.fields.slug === props.withPostOverlay);
-
       this.state = {
         overlayPost: {
           ...this.state.overlayPost,
-          content: postEl ? postEl.node : '',
-          slug: props.withPostOverlay,
+          content: 'Lorem ipsum',
+          slug: '/test',
           width: `calc(100% - 100px)`,
           height: `calc(100% - 100px)`,
           x: `50px`,
@@ -74,7 +72,7 @@ class Index extends Component {
 
     if (this.props.withPostOverlay.length > 0 && isDesktop) {
       const { latestPostRef, recentPostsRef } = this;
-      const isLastPost = this.props.data.allMarkdownRemark.edges[0].node.fields.slug === this.props.withPostOverlay;
+      const isLastPost = true; // TODO: change to correct check
       let width = 0;
       let height = 0;
       let x = 0;
@@ -129,7 +127,6 @@ class Index extends Component {
     const height = this[type].clientHeight + 4;
     const x = this[type].offsetLeft - 2;
     const y = this[type].offsetTop - 2;
-    const postEl = this.props.data.allMarkdownRemark.edges.find(post => post.node.fields.slug === slug);
 
     if (typeof window !== 'undefined') {
       window.scrollTo(0, 0);
@@ -138,8 +135,8 @@ class Index extends Component {
     this.setState(
       {
         overlayPost: {
-          content: postEl.node,
-          slug: postEl.node.fields.slug,
+          content: 'Lorem ipsum',
+          slug: '/test',
           width: `${width}px`,
           height: `${height}px`,
           x: `${x}px`,
@@ -178,18 +175,15 @@ class Index extends Component {
   bindLatestPostRef = node => this.latestPostRef = node // eslint-disable-line
 
   render() {
-    const { data, handleRestartAnimation } = this.props;
+    const { handleRestartAnimation } = this.props;
     const { overlayPost } = this.state;
     const { animation, content } = overlayPost;
-    const posts = data.allMarkdownRemark.edges;
-    const latestPost = posts[0].node;
 
     return (
       <IndexWrapper>
         <BorderWrapper animating={overlayPost.animating}>
           <GridWrapper>
             <LatestPost
-              post={latestPost}
               onShowOverlayPost={this.handleShowOverlayPost}
               bindLatestPostRef={this.bindLatestPostRef}
             />
@@ -197,7 +191,6 @@ class Index extends Component {
               <div style={{ height: '100%', minHeight: '100px', background: '#ddd' }} />
             </Canvas1>
             <RecentPosts
-              posts={posts.slice(1)}
               bindRecentPostsRef={this.bindRecentPostsRef}
               onShowOverlayPost={this.handleShowOverlayPost}
             />
@@ -251,8 +244,8 @@ class Index extends Component {
               animationDelay={animation === fadeInExpand ? '.2s' : '0s'}
             >
               <CloseBtn>home</CloseBtn>
-              <h1>{content.frontmatter.title}</h1>
-              <div dangerouslySetInnerHTML={{ __html: content.html }} />
+              <h1>{content}</h1>
+              <div dangerouslySetInnerHTML={{ __html: content }} />
             </PostOverlayContentWrapper>
           </PostOverlay>
         )}

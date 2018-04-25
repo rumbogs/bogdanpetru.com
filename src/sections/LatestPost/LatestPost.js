@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import latestPost from '../../posts/2017-10-29---hello-world'
+
 import { sizes } from '../../styles/variables';
 
 import { LatestPostWrapper, Content } from './LatestPost.style';
@@ -17,16 +19,16 @@ class LatestPost extends Component { // eslint-disable-line
   };
 
   render() {
-    const { post } = this.props;
+    const post = latestPost;
     return (
       <LatestPostWrapper innerRef={this.props.bindLatestPostRef}>
         <Content>
-          <h1>{post.frontmatter.title}</h1>
-          <p>{post.frontmatter.date}</p>
+          <h1>{post.title}</h1>
+          <p>{post.date}</p>
           <p>
             {post.excerpt}
             {/* <span><GLink to={post.fields.slug}>&#8608;</GLink></span> */}
-            <button onClick={this.handleClick(post.fields.slug)}>&#8608;</button>
+            <button onClick={this.handleClick(post.slug)}>&#8608;</button>
           </p>
         </Content>
         {/* <RollingText>
