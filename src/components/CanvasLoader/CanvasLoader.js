@@ -1,6 +1,7 @@
 /* global requestAnimationFrame */
 import React, { Component } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
+import { StaticRouter } from 'react-router-dom';
 import {
   OrthographicCamera,
   Scene,
@@ -15,6 +16,7 @@ import {
 
 import SVGWrapper from '../SVGWrapper/SVGWrapper';
 import { isIE, isFirefox } from '../../utils/helpers';
+import PostsContext from '../../contexts/PostsContext';
 
 import { Wrapper, CanvasWrapper } from './CanvasLoader.style';
 import vertexShaderSource from '../../shaders/main/vertexShader';
@@ -34,7 +36,7 @@ class CanvasLoader extends Component {
   componentWillReceiveProps(nextProps) {
     const { width, height, children, shouldRestart } = nextProps;
 
-    // this is triggered by the rerender from componentDidMount from layout
+    // this is triggered by the rerender from componentDidMount from App
     if (!isIE() && (this.props.width === null && this.props.height === null) && typeof document !== 'undefined') {
       // wait for window load to get scrollY correctly
       window.addEventListener(
@@ -56,11 +58,16 @@ class CanvasLoader extends Component {
     }
   }
 
-  init = (width, height, children) => {
+  loadTexture = (width, height, children, postData) => {
+    const slug = window.location.pathname;
+
+    console.log('before static rendering');
     let svgString = renderToStaticMarkup(
-      <SVGWrapper height={height} width={width} scrollTop={window.pageYOffset}>
-        {children}
-      </SVGWrapper>
+      <StaticRouter location={slug} context={{}}>
+        <SVGWrapper height={height} width={width} scrollTop={window.pageYOffset}>
+          {postData ? <PostsContext.Provider value={postData}>{children}</PostsContext.Provider> : children}
+        </SVGWrapper>
+      </StaticRouter>
     ).replace(/\s.inCanvas/gi, '');
 
     if (isFirefox()) svgString = svgString.replace(/.isFirefox/gi, '');
@@ -143,6 +150,19 @@ class CanvasLoader extends Component {
     image.height = getPowerOf2(height);
 
     // this.settings.renderer.render(this.settings.scene, this.settings.camera)
+  };
+
+  init = (width, height, children) => {
+    const slug = window.location.pathname;
+    if (slug.indexOf('post') >= 0) {
+      console.log('needs to import');
+      import(`../../posts/2017-10-29---${slug.split('/').slice(-1)}`).then(module =>
+        this.loadTexture(width, height, children, module.default)
+      );
+    } else {
+      console.log('not importing, no slug');
+      this.loadTexture(width, height, children);
+    }
   };
 
   animate = () => {

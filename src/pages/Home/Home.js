@@ -7,7 +7,7 @@ import About from '../../sections/About/About';
 
 import { sizes } from '../../styles/variables';
 import {
-  IndexWrapper,
+  Wrapper,
   GridWrapper,
   BorderWrapper,
   Canvas1,
@@ -21,9 +21,9 @@ import {
   fadeOut,
   PostOverlayContentWrapper,
   CloseBtn,
-} from './Index.style';
+} from './Home.style';
 
-class Index extends Component {
+class Home extends Component {
   constructor(props) {
     super(props);
 
@@ -147,6 +147,7 @@ class Index extends Component {
         const handler = () => {
           this.postOverlayRef.removeEventListener('animationend', handler);
           // in case of router navigate here
+          this.props.history.push(slug);
         };
 
         this.postOverlayRef.addEventListener('animationend', handler);
@@ -180,20 +181,14 @@ class Index extends Component {
     const { animation, content } = overlayPost;
 
     return (
-      <IndexWrapper>
+      <Wrapper>
         <BorderWrapper animating={overlayPost.animating}>
           <GridWrapper>
-            <LatestPost
-              onShowOverlayPost={this.handleShowOverlayPost}
-              bindLatestPostRef={this.bindLatestPostRef}
-            />
+            <LatestPost onShowOverlayPost={this.handleShowOverlayPost} bindLatestPostRef={this.bindLatestPostRef} />
             <Canvas1>
               <div style={{ height: '100%', minHeight: '100px', background: '#ddd' }} />
             </Canvas1>
-            <RecentPosts
-              bindRecentPostsRef={this.bindRecentPostsRef}
-              onShowOverlayPost={this.handleShowOverlayPost}
-            />
+            <RecentPosts bindRecentPostsRef={this.bindRecentPostsRef} onShowOverlayPost={this.handleShowOverlayPost} />
             {/* <StaticCanvas
               width={0}
               height={200}
@@ -249,9 +244,9 @@ class Index extends Component {
             </PostOverlayContentWrapper>
           </PostOverlay>
         )}
-      </IndexWrapper>
+      </Wrapper>
     );
   }
 }
 
-export default Index;
+export default Home;

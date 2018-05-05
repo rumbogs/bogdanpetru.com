@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
+import { Route } from 'react-router-dom';
 
-import Index from './pages/Index/Index';
+import Home from './pages/Home/Home';
+import BlogPost from './pages/BlogPost/BlogPost';
+
+import PostsContext from './contexts/PostsContext';
 
 import './styles/global';
 import { Overlay, MobileLandscapeOverlay } from './App.style';
@@ -73,13 +77,35 @@ class App extends Component {
           onStopAnimation={this.handleStopAnimation}
         >
           <div style={{ height: '100%' }}>
-            <main style={{ height: '100%' }}>
-              <Index
-                {...this.props}
-                handleRestartAnimation={this.handleRestartAnimation}
-                withPostOverlay={withPostOverlay}
-              />
-            </main>
+            {maxHeight && maxWidth ? (
+              <main style={{ height: '100%' }}>
+                <Route
+                  exact
+                  path="/"
+                  component={routerProps => (
+                    <Home
+                      {...this.props}
+                      handleRestartAnimation={this.handleRestartAnimation}
+                      withPostOverlay={withPostOverlay}
+                      {...routerProps}
+                    />
+                  )}
+                />
+                <Route
+                  path="/post/:slug"
+                  component={routerProps => (
+                    <PostsContext.Consumer>
+                      {staticData => {
+                        console.log('from app: ', staticData);
+                        return <BlogPost staticData={staticData} {...routerProps} />;
+                      }}
+                    </PostsContext.Consumer>
+                  )}
+                />
+              </main>
+            ) : (
+              ''
+            )}
           </div>
         </CanvasLoader>
       </div>

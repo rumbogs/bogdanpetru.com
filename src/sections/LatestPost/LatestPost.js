@@ -1,34 +1,31 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
-import latestPost from '../../posts/2017-10-29---hello-world'
+import latestPost from '../../posts/2017-10-29---whats-this';
 
 import { sizes } from '../../styles/variables';
 
 import { LatestPostWrapper, Content } from './LatestPost.style';
 
 class LatestPost extends Component { // eslint-disable-line
-  handleClick = slug => ev => {
-    ev.preventDefault();
-    const windowWidth = typeof window !== 'undefined' && window.innerWidth;
-    const isDesktop = windowWidth > sizes.s;
-    if (isDesktop) {
-      this.props.onShowOverlayPost('latestPostRef', slug);
-    } else {
-      // navigate away in case of router
-    }
+  handleClick = () => {
+    this.props.onShowOverlayPost('latestPostRef', `/post/${latestPost.slug}`);
   };
 
   render() {
-    const post = latestPost;
+    const isDesktop = window.innerWidth > sizes.s;
     return (
       <LatestPostWrapper innerRef={this.props.bindLatestPostRef}>
         <Content>
-          <h1>{post.title}</h1>
-          <p>{post.date}</p>
+          <h1>{latestPost.title}</h1>
+          <p>{latestPost.date}</p>
           <p>
-            {post.excerpt}
-            {/* <span><GLink to={post.fields.slug}>&#8608;</GLink></span> */}
-            <button onClick={this.handleClick(post.slug)}>&#8608;</button>
+            {latestPost.excerpt}
+            {isDesktop ? (
+              <button onClick={this.handleClick}>&#8608;</button>
+            ) : (
+              <Link to={`/post/${latestPost.slug}`}>&#8608;</Link>
+            )}
           </p>
         </Content>
         {/* <RollingText>

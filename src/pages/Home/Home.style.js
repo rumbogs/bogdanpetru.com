@@ -3,7 +3,7 @@ import media from '../../styles/breakpoints';
 
 import { fontSizes, colors } from '../../styles/variables';
 
-const IndexWrapper = styled.div`
+const Wrapper = styled.div`
   padding: 50px;
   height: 100%;
 
@@ -259,7 +259,7 @@ const CloseBtn = styled.div`
 `;
 
 export {
-  IndexWrapper,
+  Wrapper,
   GridWrapper,
   BorderWrapper,
   Canvas1,
