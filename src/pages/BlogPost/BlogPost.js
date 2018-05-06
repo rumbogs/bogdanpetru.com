@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 
+import posts from '../../posts';
+
 import { BlackBackground, BlogPostWrapper, CloseBtn, ContentWrapper } from './BlogPost.style';
 
 class BlogPost extends Component {
@@ -9,7 +11,7 @@ class BlogPost extends Component {
     super(props);
 
     this.state = {
-      post: props.staticData,
+      ...props.staticData,
     };
   }
 
@@ -18,24 +20,32 @@ class BlogPost extends Component {
     const { slug } = match.params;
 
     if (!staticData) {
-      import(`../../posts/2017-10-29---${slug}.js`).then(module => this.setState({ post: module.default }));
+      import(`../../posts/${slug}`).then(module => {
+        this.setState({
+          ...posts[slug],
+          content: module.default,
+        });
+      });
+      // import(`../../posts/2017-10-29---${slug}.json`).then(module => {
+      //   console.log(module);
+      //   this.setState({ post: module.default });
+      // });
     }
   }
 
   render() {
-    const { post } = this.state;
-    console.log('post: ', post);
-    return post ? (
+    const { title, content: Post } = this.state;
+    return Post ? (
       <div>
-        <Helmet title={post.title} />
+        <Helmet title={title} />
         <BlackBackground>
           <BlogPostWrapper>
             <CloseBtn>
               <Link to="/">home</Link>
             </CloseBtn>
             <ContentWrapper>
-              <h1>{post.title}</h1>
-              {post.content}
+              <h1>{title}</h1>
+              <Post />
             </ContentWrapper>
           </BlogPostWrapper>
         </BlackBackground>

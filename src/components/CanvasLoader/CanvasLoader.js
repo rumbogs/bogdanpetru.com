@@ -17,6 +17,7 @@ import {
 import SVGWrapper from '../SVGWrapper/SVGWrapper';
 import { isIE, isFirefox } from '../../utils/helpers';
 import PostsContext from '../../contexts/PostsContext';
+import posts from '../../posts';
 
 import { Wrapper, CanvasWrapper } from './CanvasLoader.style';
 import vertexShaderSource from '../../shaders/main/vertexShader';
@@ -61,7 +62,6 @@ class CanvasLoader extends Component {
   loadTexture = (width, height, children, postData) => {
     const slug = window.location.pathname;
 
-    console.log('before static rendering');
     let svgString = renderToStaticMarkup(
       <StaticRouter location={slug} context={{}}>
         <SVGWrapper height={height} width={width} scrollTop={window.pageYOffset}>
@@ -155,12 +155,11 @@ class CanvasLoader extends Component {
   init = (width, height, children) => {
     const slug = window.location.pathname;
     if (slug.indexOf('post') >= 0) {
-      console.log('needs to import');
-      import(`../../posts/2017-10-29---${slug.split('/').slice(-1)}.js`).then(module =>
-        this.loadTexture(width, height, children, module.default)
+      const postSlug = slug.split('/').slice(-1);
+      import(`../../posts/${postSlug}`).then(module =>
+        this.loadTexture(width, height, children, { ...posts[postSlug], content: module.default })
       );
     } else {
-      console.log('not importing, no slug');
       this.loadTexture(width, height, children);
     }
   };
