@@ -5,7 +5,8 @@ import RecentPosts from '../../sections/RecentPosts/RecentPosts';
 import FollowingPhotoWithCanvasEffects from '../../sections/FollowingPhotoWithCanvasEffects/FollowingPhotoWithCanvasEffects';
 import About from '../../sections/About/About';
 
-import latestPost from '../../posts/2017-10-29---whats-this';
+import posts from '../../posts';
+import WhatsThis from '../../posts/whats-this';
 
 import { sizes } from '../../styles/variables';
 import {
@@ -24,6 +25,16 @@ import {
   PostOverlayContentWrapper,
   CloseBtn,
 } from './Home.style';
+
+// const latestPost = Object.keys(posts).reduce(
+//   (latest, slug) => (new Date(latest.date).getTime() < new Date(posts[slug].date).getTime() ? posts[slug] : latest),
+//   { date: 0 }
+// );
+
+const latestPost = {
+  ...posts['whats-this'],
+  content: WhatsThis,
+};
 
 class Home extends Component {
   constructor(props) {
@@ -111,7 +122,7 @@ class Home extends Component {
         this.postOverlayRef.removeEventListener('animationend', handler);
         this.setState({
           overlayPost: {
-            content: '',
+            content: () => '',
             slug: '#',
           },
         });
@@ -150,7 +161,7 @@ class Home extends Component {
 
         this.postOverlayRef.addEventListener('animationend', handler);
 
-      this.setState(({ overlayPost }) => ({ // eslint-disable-line
+        this.setState(({ overlayPost }) => ({ // eslint-disable-line
           overlayPost: {
             ...overlayPost,
             animation: fadeInExpand,
@@ -176,13 +187,21 @@ class Home extends Component {
   render() {
     const { handleRestartAnimation } = this.props;
     const { overlayPost } = this.state;
-    const { animation, content, title } = overlayPost;
+    const { animation, content: Post, title } = overlayPost;
+    const overlayPostDimensions = {
+      ...overlayPost,
+      content: '',
+    };
 
     return (
       <Wrapper>
         <BorderWrapper animating={overlayPost.animating}>
           <GridWrapper>
-            <LatestPost onShowOverlayPost={this.handleShowOverlayPost} bindLatestPostRef={this.bindLatestPostRef} />
+            <LatestPost
+              post={latestPost}
+              onShowOverlayPost={this.handleShowOverlayPost}
+              bindLatestPostRef={this.bindLatestPostRef}
+            />
             <Canvas1>
               <div style={{ height: '100%', minHeight: '100px', background: '#ddd' }} />
             </Canvas1>
@@ -230,15 +249,15 @@ class Home extends Component {
             /> */}
           </GridWrapper>
         </BorderWrapper>
-        {content && (
-          <PostOverlay {...overlayPost} innerRef={this.bindPostOverlayRef}>
+        {Post && (
+          <PostOverlay {...overlayPostDimensions} innerRef={this.bindPostOverlayRef}>
             <PostOverlayContentWrapper
               animation={animation === fadeInExpand ? fadeIn : fadeOut}
               animationDelay={animation === fadeInExpand ? '.2s' : '0s'}
             >
               <CloseBtn>home</CloseBtn>
               <h1>{title}</h1>
-              {content}
+              <Post />
             </PostOverlayContentWrapper>
           </PostOverlay>
         )}
