@@ -4,7 +4,7 @@ import media from '../../styles/breakpoints';
 import { fontSizes, colors } from '../../styles/variables';
 
 const Wrapper = styled.div`
-  padding: 50px;
+  padding: 50px 50px 0;
   height: 100%;
 
   h1 {

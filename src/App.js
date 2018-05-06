@@ -32,8 +32,9 @@ class App extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.location.pathname === '/') {
-      this.setState({ withPostOverlay: this.props.location.pathname });
+    const currentPath = this.props.location.pathname;
+    if (currentPath.indexOf('post') >= 0 && nextProps.location.pathname === '/') {
+      this.setState({ withPostOverlay: currentPath.split('/').slice(-1) });
     }
   }
 
@@ -45,6 +46,7 @@ class App extends Component {
     e.preventDefault();
 
     this.setState({
+      withPostOverlay: '', // hide post overlay when restarting animation
       restartCanvas: { type: e.target.name },
     });
   };
@@ -95,10 +97,7 @@ class App extends Component {
                   path="/post/:slug"
                   component={routerProps => (
                     <PostsContext.Consumer>
-                      {staticData => {
-                        console.log('from app: ', staticData);
-                        return <BlogPost staticData={staticData} {...routerProps} />;
-                      }}
+                      {staticData => <BlogPost staticData={staticData} {...routerProps} />}
                     </PostsContext.Consumer>
                   )}
                 />

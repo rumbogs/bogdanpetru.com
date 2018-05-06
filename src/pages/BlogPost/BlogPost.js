@@ -18,7 +18,7 @@ class BlogPost extends Component {
     const { slug } = match.params;
 
     if (!staticData) {
-      import(`../../posts/2017-10-29---${slug}`).then(module => this.setState({ post: module.default }));
+      import(`../../posts/2017-10-29---${slug}.js`).then(module => this.setState({ post: module.default }));
     }
   }
 

@@ -156,7 +156,7 @@ class CanvasLoader extends Component {
     const slug = window.location.pathname;
     if (slug.indexOf('post') >= 0) {
       console.log('needs to import');
-      import(`../../posts/2017-10-29---${slug.split('/').slice(-1)}`).then(module =>
+      import(`../../posts/2017-10-29---${slug.split('/').slice(-1)}.js`).then(module =>
         this.loadTexture(width, height, children, module.default)
       );
     } else {

@@ -5,6 +5,8 @@ import RecentPosts from '../../sections/RecentPosts/RecentPosts';
 import FollowingPhotoWithCanvasEffects from '../../sections/FollowingPhotoWithCanvasEffects/FollowingPhotoWithCanvasEffects';
 import About from '../../sections/About/About';
 
+import latestPost from '../../posts/2017-10-29---whats-this';
+
 import { sizes } from '../../styles/variables';
 import {
   Wrapper,
@@ -29,12 +31,11 @@ class Home extends Component {
 
     this.state = {
       overlayPost: {
+        ...latestPost,
         animating: '',
-        content: '',
         width: 0,
         height: 0,
         animation: null,
-        slug: '#',
         x: 0,
         y: 0,
         startWidth: 0,
@@ -55,8 +56,6 @@ class Home extends Component {
       this.state = {
         overlayPost: {
           ...this.state.overlayPost,
-          content: 'Lorem ipsum',
-          slug: '/test',
           width: `calc(100% - 100px)`,
           height: `calc(100% - 100px)`,
           x: `50px`,
@@ -135,8 +134,7 @@ class Home extends Component {
     this.setState(
       {
         overlayPost: {
-          content: 'Lorem ipsum',
-          slug: '/test',
+          ...latestPost,
           width: `${width}px`,
           height: `${height}px`,
           x: `${x}px`,
@@ -178,7 +176,7 @@ class Home extends Component {
   render() {
     const { handleRestartAnimation } = this.props;
     const { overlayPost } = this.state;
-    const { animation, content } = overlayPost;
+    const { animation, content, title } = overlayPost;
 
     return (
       <Wrapper>
@@ -239,8 +237,8 @@ class Home extends Component {
               animationDelay={animation === fadeInExpand ? '.2s' : '0s'}
             >
               <CloseBtn>home</CloseBtn>
-              <h1>{content}</h1>
-              <div dangerouslySetInnerHTML={{ __html: content }} />
+              <h1>{title}</h1>
+              {content}
             </PostOverlayContentWrapper>
           </PostOverlay>
         )}
