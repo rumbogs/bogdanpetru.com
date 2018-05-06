@@ -18,9 +18,10 @@ class BlogPost extends Component {
   componentDidMount() {
     const { match, staticData } = this.props;
     const { slug } = match.params;
+    // const postFileName = posts[slug].component;
 
     if (!staticData) {
-      import(`../../posts/${slug}`).then(module => {
+      import(`../../posts/WhatsThis`).then(module => {
         this.setState({
           ...posts[slug],
           content: module.default,

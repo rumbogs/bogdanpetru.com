@@ -6,7 +6,7 @@ import FollowingPhotoWithCanvasEffects from '../../sections/FollowingPhotoWithCa
 import About from '../../sections/About/About';
 
 import posts from '../../posts';
-import WhatsThis from '../../posts/whats-this';
+import WhatsThis from '../../posts/WhatsThis';
 
 import { sizes } from '../../styles/variables';
 import {

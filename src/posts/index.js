@@ -6,5 +6,6 @@ export default {
     date: '2017-10-29',
     slug: 'whats-this',
     draft: false,
+    component: 'WhatsThis',
   },
 };

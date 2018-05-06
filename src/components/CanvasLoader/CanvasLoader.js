@@ -156,7 +156,8 @@ class CanvasLoader extends Component {
     const slug = window.location.pathname;
     if (slug.indexOf('post') >= 0) {
       const postSlug = slug.split('/').slice(-1);
-      import(`../../posts/${postSlug}`).then(module =>
+      // const postFileName = posts[postSlug].component;
+      import(`../../posts/WhatsThis`).then(module =>
         this.loadTexture(width, height, children, { ...posts[postSlug], content: module.default })
       );
     } else {
