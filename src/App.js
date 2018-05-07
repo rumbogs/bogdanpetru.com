@@ -5,7 +5,9 @@ import { Route } from 'react-router-dom';
 import Home from './pages/Home/Home';
 import BlogPost from './pages/BlogPost/BlogPost';
 
-import PostsContext from './contexts/PostsContext';
+// import WhatsThis from './posts/WhatsThis/WhatsThis';
+
+// import PostsContext from './contexts/PostsContext';
 
 import './styles/global';
 import { Overlay, MobileLandscapeOverlay } from './App.style';
@@ -93,14 +95,15 @@ class App extends Component {
                     />
                   )}
                 />
-                <Route
+                <Route path="/post/:slug" component={BlogPost} />
+                {/* <Route
                   path="/post/:slug"
                   component={routerProps => (
                     <PostsContext.Consumer>
-                      {staticData => <BlogPost staticData={staticData} {...routerProps} />}
+                      {staticData => <WhatsThis staticData={staticData} {...routerProps} />}
                     </PostsContext.Consumer>
                   )}
-                />
+                /> */}
               </main>
             ) : (
               ''

@@ -5,8 +5,7 @@ import RecentPosts from '../../sections/RecentPosts/RecentPosts';
 import FollowingPhotoWithCanvasEffects from '../../sections/FollowingPhotoWithCanvasEffects/FollowingPhotoWithCanvasEffects';
 import About from '../../sections/About/About';
 
-import posts from '../../posts';
-import WhatsThis from '../../posts/WhatsThis';
+import posts from '../../posts/';
 
 import { sizes } from '../../styles/variables';
 import {
@@ -26,15 +25,10 @@ import {
   CloseBtn,
 } from './Home.style';
 
-// const latestPost = Object.keys(posts).reduce(
-//   (latest, slug) => (new Date(latest.date).getTime() < new Date(posts[slug].date).getTime() ? posts[slug] : latest),
-//   { date: 0 }
-// );
-
-const latestPost = {
-  ...posts['whats-this'],
-  content: WhatsThis,
-};
+const latestPost = Object.keys(posts).reduce(
+  (post, slug) => (new Date(posts[slug].date).getTime() > new Date(post.date).getTime() ? posts[slug] : post),
+  { date: 0 }
+);
 
 class Home extends Component {
   constructor(props) {
@@ -42,7 +36,7 @@ class Home extends Component {
 
     this.state = {
       overlayPost: {
-        ...latestPost,
+        isHidden: false,
         animating: '',
         width: 0,
         height: 0,
@@ -67,6 +61,7 @@ class Home extends Component {
       this.state = {
         overlayPost: {
           ...this.state.overlayPost,
+          isHidden: false,
           width: `calc(100% - 100px)`,
           height: `calc(100% - 100px)`,
           x: `50px`,
@@ -77,8 +72,7 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    const windowWidth = typeof window !== 'undefined' && window.innerWidth;
-    const isDesktop = windowWidth > sizes.s;
+    const isDesktop = window.innerWidth > sizes.s;
 
     if (this.props.withPostOverlay.length > 0 && isDesktop) {
       const { latestPostRef, recentPostsRef } = this;
@@ -122,8 +116,7 @@ class Home extends Component {
         this.postOverlayRef.removeEventListener('animationend', handler);
         this.setState({
           overlayPost: {
-            content: () => '',
-            slug: '#',
+            isHidden: false,
           },
         });
       };
@@ -138,14 +131,12 @@ class Home extends Component {
     const x = this[type].offsetLeft - 2;
     const y = this[type].offsetTop - 2;
 
-    if (typeof window !== 'undefined') {
-      window.scrollTo(0, 0);
-    }
+    window.scrollTo(0, 0);
 
     this.setState(
       {
         overlayPost: {
-          ...latestPost,
+          ...this.state.overlayPost,
           width: `${width}px`,
           height: `${height}px`,
           x: `${x}px`,
@@ -187,10 +178,10 @@ class Home extends Component {
   render() {
     const { handleRestartAnimation } = this.props;
     const { overlayPost } = this.state;
-    const { animation, content: Post, title } = overlayPost;
+    const { animation, isHidden } = overlayPost;
     const overlayPostDimensions = {
       ...overlayPost,
-      content: '',
+      isHidden,
     };
 
     return (
@@ -198,9 +189,9 @@ class Home extends Component {
         <BorderWrapper animating={overlayPost.animating}>
           <GridWrapper>
             <LatestPost
-              post={latestPost}
               onShowOverlayPost={this.handleShowOverlayPost}
               bindLatestPostRef={this.bindLatestPostRef}
+              post={latestPost}
             />
             <Canvas1>
               <div style={{ height: '100%', minHeight: '100px', background: '#ddd' }} />
@@ -249,15 +240,15 @@ class Home extends Component {
             /> */}
           </GridWrapper>
         </BorderWrapper>
-        {Post && (
+        {!isHidden && (
           <PostOverlay {...overlayPostDimensions} innerRef={this.bindPostOverlayRef}>
             <PostOverlayContentWrapper
               animation={animation === fadeInExpand ? fadeIn : fadeOut}
               animationDelay={animation === fadeInExpand ? '.2s' : '0s'}
             >
               <CloseBtn>home</CloseBtn>
-              <h1>{title}</h1>
-              <Post />
+              <h1>{latestPost.title}</h1>
+              {latestPost.content}
             </PostOverlayContentWrapper>
           </PostOverlay>
         )}

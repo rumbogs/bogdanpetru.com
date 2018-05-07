@@ -17,7 +17,6 @@ import {
 import SVGWrapper from '../SVGWrapper/SVGWrapper';
 import { isIE, isFirefox } from '../../utils/helpers';
 import PostsContext from '../../contexts/PostsContext';
-import posts from '../../posts';
 
 import { Wrapper, CanvasWrapper } from './CanvasLoader.style';
 import vertexShaderSource from '../../shaders/main/vertexShader';
@@ -153,16 +152,16 @@ class CanvasLoader extends Component {
   };
 
   init = (width, height, children) => {
-    const slug = window.location.pathname;
-    if (slug.indexOf('post') >= 0) {
-      const postSlug = slug.split('/').slice(-1);
-      // const postFileName = posts[postSlug].component;
-      import(`../../posts/WhatsThis`).then(module =>
-        this.loadTexture(width, height, children, { ...posts[postSlug], content: module.default })
-      );
-    } else {
-      this.loadTexture(width, height, children);
-    }
+    // const slug = window.location.pathname;
+    // if (slug.indexOf('post') >= 0) {
+    //   const postSlug = slug.split('/').slice(-1);
+    //   // const postFileName = posts[postSlug].component;
+    //   import(`../../posts/WhatsThis`).then(module =>
+    //     this.loadTexture(width, height, children, { ...posts[postSlug], content: module.default })
+    //   );
+    // } else {
+    this.loadTexture(width, height, children);
+    // }
   };
 
   animate = () => {

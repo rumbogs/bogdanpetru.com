@@ -11,32 +11,29 @@ class BlogPost extends Component {
     super(props);
 
     this.state = {
-      ...props.staticData,
+      post: posts[this.props.match.params.slug],
     };
   }
 
-  componentDidMount() {
-    const { match, staticData } = this.props;
-    const { slug } = match.params;
-    // const postFileName = posts[slug].component;
+  // componentDidMount() {
+  //   const { match } = this.props;
+  //   const { slug } = match.params;
+  //   const postFileName = posts[slug].component;
 
-    if (!staticData) {
-      import(`../../posts/WhatsThis`).then(module => {
-        this.setState({
-          ...posts[slug],
-          content: module.default,
-        });
-      });
-      // import(`../../posts/2017-10-29---${slug}.json`).then(module => {
-      //   console.log(module);
-      //   this.setState({ post: module.default });
-      // });
-    }
-  }
+  //   if (!staticData) {
+  //     import(`../../posts/WhatsThis`).then(module => {
+  //       this.setState({
+  //         ...posts[slug],
+  //         content: module.default,
+  //       });
+  //     });
+  //   }
+  // }
 
   render() {
-    const { title, content: Post } = this.state;
-    return Post ? (
+    const { post } = this.state;
+    const { title, content } = post;
+    return title.length > 0 ? (
       <div>
         <Helmet title={title} />
         <BlackBackground>
@@ -46,7 +43,7 @@ class BlogPost extends Component {
             </CloseBtn>
             <ContentWrapper>
               <h1>{title}</h1>
-              <Post />
+              {content}
             </ContentWrapper>
           </BlogPostWrapper>
         </BlackBackground>
