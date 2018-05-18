@@ -7,6 +7,8 @@ import About from '../../sections/About/About';
 
 import posts from '../../posts/';
 
+import { getScrollbarWidth } from '../../utils/helpers';
+
 import { sizes } from '../../styles/variables';
 import {
   Wrapper,
@@ -33,6 +35,8 @@ const latestPost = Object.keys(posts).reduce(
 class Home extends Component {
   constructor(props) {
     super(props);
+
+    this.scrollbarWidth = getScrollbarWidth();
 
     this.state = {
       overlayPost: {
@@ -85,13 +89,13 @@ class Home extends Component {
       if (isLastPost) {
         width = latestPostRef.clientWidth + 4;
         height = latestPostRef.clientHeight + 4;
-        x = latestPostRef.offsetLeft - 2;
-        y = latestPostRef.offsetTop - 2;
+        x = latestPostRef.offsetLeft;
+        y = latestPostRef.offsetTop;
       } else {
         width = recentPostsRef.clientWidth + 4;
         height = recentPostsRef.clientHeight + 4;
-        x = recentPostsRef.offsetLeft - 2; // subtract border
-        y = recentPostsRef.offsetTop - 2; // subtract border
+        x = recentPostsRef.offsetLeft;
+        y = recentPostsRef.offsetTop;
       }
 
       /* eslint-disable */
@@ -128,8 +132,8 @@ class Home extends Component {
   handleShowOverlayPost = (type, slug) => {
     const width = this[type].clientWidth + 4;
     const height = this[type].clientHeight + 4;
-    const x = this[type].offsetLeft - 2;
-    const y = this[type].offsetTop - 2;
+    const x = this[type].offsetLeft;
+    const y = this[type].offsetTop;
 
     window.scrollTo(0, 0);
 
@@ -159,7 +163,7 @@ class Home extends Component {
             animating: 'in',
             startWidth: `${width}px`,
             startHeight: `${height}px`,
-            finishWidth: `calc(100% - 100px)`,
+            finishWidth: `calc(100% - ${100 - this.scrollbarWidth}px)`,
             finishHeight: `calc(100vh - 100px)`,
             startX: `${x}px`,
             startY: `${y}px`,
