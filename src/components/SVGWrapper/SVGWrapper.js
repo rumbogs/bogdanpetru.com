@@ -1,6 +1,5 @@
 import React from 'react';
 import { __DO_NOT_USE_OR_YOU_WILL_BE_HAUNTED_BY_SPOOKY_GHOSTS as scSecrets } from 'styled-components';
-// import styleSheet from 'styled-components/lib/models/StyleSheet'; // eslint-disable-line
 
 import { colors } from '../../styles/variables';
 

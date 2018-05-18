@@ -5,8 +5,6 @@ import { Route } from 'react-router-dom';
 import Home from './pages/Home/Home';
 import BlogPost from './pages/BlogPost/BlogPost';
 
-// import WhatsThis from './posts/WhatsThis/WhatsThis';
-
 // import PostsContext from './contexts/PostsContext';
 
 import './styles/global';
@@ -25,12 +23,10 @@ class App extends Component {
   };
 
   componentDidMount() {
-    if (typeof document !== 'undefined') {
-      const { body, documentElement } = document;
-      const maxHeight = Math.max(body.offsetHeight, documentElement.clientHeight, documentElement.offsetHeight);
-      const maxWidth = Math.max(body.offsetWidth, documentElement.clientWidth, documentElement.offsetWidth);
-      this.setState({ maxHeight, maxWidth }) // eslint-disable-line
-    }
+    const { body, documentElement } = document;
+    const maxHeight = Math.max(body.offsetHeight, documentElement.clientHeight, documentElement.offsetHeight);
+    const maxWidth = Math.max(body.offsetWidth, documentElement.clientWidth, documentElement.offsetWidth);
+    this.setState({ maxHeight, maxWidth }) // eslint-disable-line
   }
 
   componentWillReceiveProps(nextProps) {
