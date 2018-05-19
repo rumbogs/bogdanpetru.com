@@ -1,10 +1,8 @@
-import { injectGlobal } from 'styled-components';
-
 import { colors, fontSizes, fontFamily, main } from '../styles/variables';
 import media from '../styles/breakpoints';
 
 /* eslint-disable */
-injectGlobal`
+export default `
 * {
   box-sizing: border-box;
 }

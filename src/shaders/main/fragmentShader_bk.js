@@ -1,13 +1,14 @@
 export default `
-precision mediump float;
+uniform float time;
+uniform sampler2D texture;
 
 uniform float u_pixelSize;
-uniform sampler2D texture;
 varying vec2 vUv;
 vec4 myTexture;
 
-void main() {
-   if (u_pixelSize != 0.0) {
+void main(void) {
+  
+  if (u_pixelSize != 0.0) {
     float pixels = 512.0;
     float dx = u_pixelSize * (1.0 / pixels);
     float dy = u_pixelSize * (1.0 / pixels);

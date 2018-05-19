@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import { Route } from 'react-router-dom';
+import { injectGlobal } from 'styled-components';
 
 import Home from './pages/Home/Home';
 import BlogPost from './pages/BlogPost/BlogPost';
 
 // import PostsContext from './contexts/PostsContext';
 
-import './styles/global';
+import globalStyles from './styles/global';
 import { Overlay, MobileLandscapeOverlay } from './App.style';
 
 import CanvasLoader from './components/CanvasLoader/CanvasLoader';
@@ -27,6 +28,8 @@ class App extends Component {
     const maxHeight = Math.max(body.offsetHeight, documentElement.clientHeight, documentElement.offsetHeight);
     const maxWidth = Math.max(body.offsetWidth, documentElement.clientWidth, documentElement.offsetWidth);
     this.setState({ maxHeight, maxWidth }) // eslint-disable-line
+
+    injectGlobal`${globalStyles}`;
   }
 
   componentWillReceiveProps(nextProps) {
