@@ -7,8 +7,6 @@ import About from '../../sections/About/About';
 
 import posts from '../../posts/';
 
-import { getScrollbarWidth } from '../../utils/helpers';
-
 import { sizes } from '../../styles/variables';
 import {
   Wrapper,
@@ -35,8 +33,6 @@ const latestPost = Object.keys(posts).reduce(
 class Home extends Component {
   constructor(props) {
     super(props);
-
-    this.scrollbarWidth = getScrollbarWidth();
 
     this.state = {
       overlayPost: {
@@ -180,7 +176,7 @@ class Home extends Component {
   bindLatestPostRef = node => this.latestPostRef = node // eslint-disable-line
 
   render() {
-    const { handleRestartAnimation } = this.props;
+    const { handleRestartAnimation, scrollbarWidth } = this.props;
     const { overlayPost } = this.state;
     const { animation, isHidden } = overlayPost;
     const overlayPostDimensions = {
@@ -189,7 +185,7 @@ class Home extends Component {
     };
 
     return (
-      <Wrapper>
+      <Wrapper scrollbarWidth={scrollbarWidth}>
         <BorderWrapper animating={overlayPost.animating}>
           <GridWrapper>
             <LatestPost

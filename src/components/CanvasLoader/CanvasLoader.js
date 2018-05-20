@@ -1,10 +1,11 @@
 /* global requestAnimationFrame */
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 
 import SVGWrapper from '../SVGWrapper/SVGWrapper';
-import { isIE, isFirefox, createProgram, createShader } from '../../utils/helpers';
+import { isIE, isFirefox, createProgram, createShader, getScrollbarWidth } from '../../utils/helpers';
 import PostsContext from '../../contexts/PostsContext';
 
 import { Wrapper, CanvasWrapper } from './CanvasLoader.style';
@@ -20,10 +21,18 @@ const getPowerOf2 = size => {
 };
 
 class CanvasLoader extends Component {
-  state = { hideCanvas: false };
+  constructor(props) {
+    super(props);
+    this.state = {
+      hideCanvas: false,
+    };
+
+    this.canvasOverlayContainer = document.createElement('div');
+    document.body.appendChild(this.canvasOverlayContainer);
+  }
 
   componentWillReceiveProps(nextProps) {
-    const { width, height, children, shouldRestart } = nextProps;
+    const { width, height, children, shouldRestart, showOverlay } = nextProps;
 
     // this is triggered by the rerender from componentDidMount from App
     if (!isIE() && (this.props.width === null && this.props.height === null) && typeof document !== 'undefined') {
@@ -47,6 +56,10 @@ class CanvasLoader extends Component {
     }
   }
 
+  componentWillUnmount() {
+    document.body.removeChild(this.canvasOverlayContainer);
+  }
+
   canvas = React.createRef();
 
   loadTexture = (width, height, children, postData) => {
@@ -64,14 +77,7 @@ class CanvasLoader extends Component {
     if (isFirefox()) svgString = svgString.replace(/.isFirefox/gi, '');
 
     const image = document.createElement('img');
-    image.addEventListener(
-      'load',
-      e => {
-        /* Build Canvas Renderer */
-        this.buildRenderer(width, height, e.target);
-      },
-      false
-    );
+    image.addEventListener('load', e => this.buildRenderer(width, height, e.target), false);
 
     image.crossOrigin = 'anonymous';
     image.src = `data:image/svg+xml;base64,${window.btoa(unescape(encodeURIComponent(svgString)))}`;

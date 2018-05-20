@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import posts from '../../posts';
 
-import { BlackBackground, BlogPostWrapper, CloseBtn, ContentWrapper } from './BlogPost.style';
+import { BlackBackground, BlogPostWrapper, CloseBtn, ContentWrapper, Wrapper } from './BlogPost.style';
 
 class BlogPost extends Component {
   constructor(props) {
@@ -32,9 +32,10 @@ class BlogPost extends Component {
 
   render() {
     const { post } = this.state;
+    const { scrollbarWidth } = this.props;
     const { title, content } = post;
     return title.length > 0 ? (
-      <div>
+      <Wrapper scrollbarWidth={scrollbarWidth}>
         <Helmet title={title} />
         <BlackBackground>
           <BlogPostWrapper>
@@ -47,7 +48,7 @@ class BlogPost extends Component {
             </ContentWrapper>
           </BlogPostWrapper>
         </BlackBackground>
-      </div>
+      </Wrapper>
     ) : (
       ''
     );

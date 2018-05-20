@@ -67,3 +67,9 @@ export const ContentWrapper = styled.div`
     `};
   }
 `;
+
+export const Wrapper = styled.div`
+  .inCanvas {
+    width: ${({ scrollbarWidth }) => `calc(100% - ${scrollbarWidth}px)`};
+  }
+`;
