@@ -40,7 +40,7 @@ class BlogPost extends Component {
         <BlackBackground>
           <BlogPostWrapper>
             <CloseBtn>
-              <Link to="/">home</Link>
+              <Link to="/">&lt;&lt;&lt; home</Link>
             </CloseBtn>
             <ContentWrapper>
               <h1>{title}</h1>

@@ -1,11 +1,9 @@
 import styled from 'styled-components';
 
-export const Wrapper = styled.div`
-  height: 100%;
-`;
-
-export const CanvasWrapper = styled.div`
+export default styled.div`
   position: fixed;
+  top: 0;
+  left: 0;
   z-index: 10;
   pointer-events: none;
   height: 100%;

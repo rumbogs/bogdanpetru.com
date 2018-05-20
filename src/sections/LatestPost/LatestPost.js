@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import { sizes } from '../../styles/variables';
 
-import { LatestPostWrapper, Content } from './LatestPost.style';
+import { LatestPostWrapper, Content, RollingText, StartPar, SeeMoreBtn } from './LatestPost.style';
 
 class LatestPost extends Component { // eslint-disable-line
   handleClick = () => {
@@ -20,25 +20,26 @@ class LatestPost extends Component { // eslint-disable-line
         <Content>
           <h1>{post.title}</h1>
           <p>{post.date}</p>
-          <p>
-            {post.excerpt}
-            {isDesktop ? (
-              <button onClick={this.handleClick}>&#8608;</button>
-            ) : (
-              <Link to={`/post/${post.slug}`}>&#8608;</Link>
-            )}
-          </p>
+          {isDesktop ? (
+            <SeeMoreBtn onClick={this.handleClick}>
+              <p>{post.excerpt} &gt;&gt;&gt;</p>
+            </SeeMoreBtn>
+          ) : (
+            <Link to={`/post/${post.slug}`}>
+              <p>{post.excerpt}</p>
+            </Link>
+          )}
         </Content>
-        {/* <RollingText>
+        <RollingText>
           <StartPar>
-            <a href="https://github.com/pbogdan03">github.com/pbogdan03</a>
-            <a href="https://www.linkedin.com/in/pbogdan03/">linkedin.com/in/pbogdan03/</a>
-            <a href="https://github.com/pbogdan03">github.com/pbogdan03</a>
-            <a href="https://www.linkedin.com/in/pbogdan03/">linkedin.com/in/pbogdan03/</a>
-            <a href="https://github.com/pbogdan03">github.com/pbogdan03</a>
-            <a href="https://www.linkedin.com/in/pbogdan03/">linkedin.com/in/pbogdan03/</a>
+            <a href="https://github.com/rumbogs">github.com/rumbogs</a>
+            <a href="https://www.linkedin.com/in/bogdan-petru/">linkedin.com/in/bogdan-petru/</a>
+            <a href="https://github.com/rumbogs">github.com/rumbogs</a>
+            <a href="https://www.linkedin.com/in/bogdan-petru/">linkedin.com/in/bogdan-petru/</a>
+            <a href="https://github.com/rumbogs">github.com/rumbogs</a>
+            <a href="https://www.linkedin.com/in/bogdan-petru/">linkedin.com/in/bogdan-petru/</a>
           </StartPar>
-        </RollingText> */}
+        </RollingText>
       </LatestPostWrapper>
     );
   }

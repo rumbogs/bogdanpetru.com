@@ -126,6 +126,7 @@ class Home extends Component {
   }
 
   handleShowOverlayPost = (type, slug) => {
+    const { history, scrollbarWidth } = this.props;
     const width = this[type].clientWidth + 4;
     const height = this[type].clientHeight + 4;
     const x = this[type].offsetLeft;
@@ -147,7 +148,7 @@ class Home extends Component {
         const handler = () => {
           this.postOverlayRef.removeEventListener('animationend', handler);
           // in case of router navigate here
-          this.props.history.push(slug);
+          history.push(slug);
         };
 
         this.postOverlayRef.addEventListener('animationend', handler);
@@ -159,7 +160,7 @@ class Home extends Component {
             animating: 'in',
             startWidth: `${width}px`,
             startHeight: `${height}px`,
-            finishWidth: `calc(100% - ${100 - this.scrollbarWidth}px)`,
+            finishWidth: `calc(100% - ${100 - scrollbarWidth}px)`,
             finishHeight: `calc(100vh - 100px)`,
             startX: `${x}px`,
             startY: `${y}px`,
@@ -246,7 +247,7 @@ class Home extends Component {
               animation={animation === fadeInExpand ? fadeIn : fadeOut}
               animationDelay={animation === fadeInExpand ? '.2s' : '0s'}
             >
-              <CloseBtn>home</CloseBtn>
+              <CloseBtn>&lt;&lt;&lt; home</CloseBtn>
               <h1>{latestPost.title}</h1>
               {latestPost.content}
             </PostOverlayContentWrapper>

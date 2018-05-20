@@ -1,20 +1,6 @@
 import styled from 'styled-components';
 
-import { colors } from './styles/variables';
-
-export const Overlay = styled.div`
-  position: fixed;
-  height: 100%;
-  width: 100%;
-  pointer-events: none;
-
-  background-color: ${colors.BACKGROUND_COLOR};
-  display: ${({ showOverlay }) => (showOverlay ? 'block' : 'none')};
-
-  z-index: 9; // canvas is 10
-`;
-
-export const MobileLandscapeOverlay = styled.div`
+export default styled.div`
   position: fixed;
   z-index: 9999;
   top: 0;

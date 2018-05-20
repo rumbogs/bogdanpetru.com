@@ -5,10 +5,10 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 
 import SVGWrapper from '../SVGWrapper/SVGWrapper';
-import { isIE, isFirefox, createProgram, createShader, getScrollbarWidth } from '../../utils/helpers';
+import { isFirefox, createProgram, createShader } from '../../utils/helpers';
 import PostsContext from '../../contexts/PostsContext';
 
-import { Wrapper, CanvasWrapper } from './CanvasLoader.style';
+import CanvasWrapper from './CanvasLoader.style';
 import vertexShaderSource from '../../shaders/main/vertexShader';
 import fragmentShaderSource from '../../shaders/main/fragmentShader';
 
@@ -23,41 +23,37 @@ const getPowerOf2 = size => {
 class CanvasLoader extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      hideCanvas: false,
-    };
 
     this.canvasOverlayContainer = document.createElement('div');
+    document.body.classList.add('no-overflow');
     document.body.appendChild(this.canvasOverlayContainer);
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { width, height, children, shouldRestart, showOverlay } = nextProps;
+  componentDidMount() {
+    const { width, height, children, type } = this.props;
 
-    // this is triggered by the rerender from componentDidMount from App
-    if (!isIE() && (this.props.width === null && this.props.height === null) && typeof document !== 'undefined') {
-      // wait for window load to get scrollY correctly
-      window.addEventListener(
-        'load',
-        function handleLoad() {
-          window.removeEventListener('load', handleLoad);
-          this.init(width, height, children);
-        }.bind(this)
-      );
+    // TODO: init different animation based on type
+    if (type === 'pixelate') {
+      this.init(width, height, children);
     }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { width, height, children, shouldRestart } = nextProps;
 
     /**
      * if the button was clicked and state update triggered in parent
      * if we have width and height from the parent
      * if the animation is not already playing (canvas is not hidden)
      */
-    if (shouldRestart && (width !== null && height !== null) && this.state.hideCanvas) {
+    if (shouldRestart && (width !== null && height !== null)) {
       this.handleRestartAnimation(width, height, children, shouldRestart);
     }
   }
 
   componentWillUnmount() {
     document.body.removeChild(this.canvasOverlayContainer);
+    document.body.classList.remove('no-overflow');
   }
 
   canvas = React.createRef();
@@ -200,17 +196,6 @@ class CanvasLoader extends Component {
     }
   };
 
-  handleRestartAnimation = (width, height, children, shouldRestart) => {
-    this.props.onToggleOverlay();
-
-    // TODO: init different animation based on type
-    if (shouldRestart.type === 'pixelate') {
-      this.setState({ hideCanvas: false }, () => {
-        this.init(width, height, children);
-      });
-    }
-  };
-
   renderCanvas = () => {
     const duration = 10;
     const currentTime = new Date().getTime();
@@ -222,12 +207,11 @@ class CanvasLoader extends Component {
 
     if (this.pixelSizeValue === 0.0) {
       this.animating = false;
-      this.props.onToggleOverlay();
-      this.setState({ hideCanvas: true });
-      if (this.props.shouldRestart) {
-        // if restarted from button, reset state in layout
-        this.props.onStopAnimation();
-      }
+      this.props.onAnimationEnd();
+      // if (this.props.shouldRestart) {
+      //   // if restarted from button, reset state in layout
+      //   this.props.onStopAnimation();
+      // }
     }
 
     // redraw scene
@@ -235,17 +219,13 @@ class CanvasLoader extends Component {
   };
 
   render() {
-    const { width, height, children } = this.props;
-    const { hideCanvas } = this.state;
-    return (
-      <Wrapper>
-        {!hideCanvas && (
-          <CanvasWrapper width={width} height={height}>
-            <canvas ref={this.canvas} width={getPowerOf2(width)} height={getPowerOf2(height)} />
-          </CanvasWrapper>
-        )}
-        {children}
-      </Wrapper>
+    const { width, height } = this.props;
+
+    return ReactDOM.createPortal(
+      <CanvasWrapper width={width} height={height}>
+        <canvas ref={this.canvas} width={getPowerOf2(width)} height={getPowerOf2(height)} />
+      </CanvasWrapper>,
+      this.canvasOverlayContainer
     );
   }
 }

@@ -15,6 +15,7 @@ html, body {
 }
 
 body {
+  position: relative;
   font-family: ${fontFamily.FONT_KARLA};
   overflow-x: hidden;
 
