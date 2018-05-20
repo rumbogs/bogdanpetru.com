@@ -36,6 +36,7 @@ const GridWrapper = styled.div`
   grid-gap: 2px;
   min-height: 100%;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-auto-flow: dense;
 
   & > div {
     overflow: hidden;
@@ -124,8 +125,8 @@ ${media.s`
 `}
 `;
 const Canvas1 = styled.div`
-  grid-column: auto / span 1;
-  grid-row: auto / span 1;
+  grid-column: auto;
+  grid-row: auto;
   background-color: ${colors.BACKGROUND_COLOR};
 
   ${media.s`
@@ -133,18 +134,18 @@ const Canvas1 = styled.div`
   `};
 `;
 const Canvas2 = styled.div`
-  grid-column: auto / span 1;
-  grid-row: auto / span 1;
+  grid-column: auto;
+  grid-row: auto;
   background-color: ${colors.BACKGROUND_COLOR};
 `;
 const Canvas3 = styled.div`
-  grid-column: auto / span 1;
-  grid-row: auto / span 2;
+  grid-column: auto;
+  grid-row: auto;
   background-color: ${colors.BACKGROUND_COLOR};
 `;
 const Canvas4 = styled.div`
-  grid-column: auto / span 2;
-  grid-row: auto / span 1;
+  grid-column: auto;
+  grid-row: auto;
   background-color: ${colors.BACKGROUND_COLOR};
 
   ${media.s`
