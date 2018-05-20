@@ -7,6 +7,10 @@ const Wrapper = styled.div`
   padding: 50px 50px 0;
   height: 100%;
 
+  .inCanvas {
+    width: ${({ scrollbarWidth }) => `calc(100% - ${scrollbarWidth}px)`};
+  }
+
   h1 {
     font-size: 72px;
     margin-top: 0;
@@ -22,10 +26,10 @@ const Wrapper = styled.div`
   font-family: Karla, Helvetica, Arial, sans-serif;
 
   ${media.s`
-  padding: 0;
-  /* repeated styles to correctly render svg */
-  font-size: ${fontSizes.s};
-`};
+    padding: 0;
+    /* repeated styles to correctly render svg */
+    font-size: ${fontSizes.s};
+  `};
 `;
 const GridWrapper = styled.div`
   display: grid;

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { colors } from '../../styles/variables';
+import { colors, fontFamily } from '../../styles/variables';
 
 export const LatestPostWrapper = styled.div`
   grid-column: auto / span 3;
@@ -49,5 +49,19 @@ export const StartPar = styled.p`
     100% {
       transform: translateX(-33.3333%);
     }
+  }
+`;
+
+export const SeeMoreBtn = styled.button`
+  font-size: 16px;
+  cursor: pointer;
+  background-color: transparent;
+  border: 0;
+  text-align: left;
+  font-family: ${fontFamily.FONT_KARLA};
+  padding: 0;
+
+  p {
+    display: inline;
   }
 `;

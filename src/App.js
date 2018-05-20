@@ -9,27 +9,30 @@ import BlogPost from './pages/BlogPost/BlogPost';
 // import PostsContext from './contexts/PostsContext';
 
 import globalStyles from './styles/global';
-import { Overlay, MobileLandscapeOverlay } from './App.style';
+import MobileLandscapeOverlay from './App.style';
 
 import CanvasLoader from './components/CanvasLoader/CanvasLoader';
-import { isIE } from './utils/helpers';
+import ColorOverlay from './components/ColorOverlay/ColorOverlay';
+import { isIE, getScrollbarWidth } from './utils/helpers';
 
 class App extends Component {
   state = {
-    maxHeight: null,
-    maxWidth: null,
-    showOverlay: true,
-    restartCanvas: null,
+    height: null,
+    width: null,
+    withCanvasAnimation: 'pixelate',
     withPostOverlay: '',
   };
 
   componentDidMount() {
     const { body, documentElement } = document;
-    const maxHeight = Math.max(body.offsetHeight, documentElement.clientHeight, documentElement.offsetHeight);
-    const maxWidth = Math.max(body.offsetWidth, documentElement.clientWidth, documentElement.offsetWidth);
-    this.setState({ maxHeight, maxWidth }) // eslint-disable-line
+    const height = Math.max(body.offsetHeight, documentElement.clientHeight, documentElement.offsetHeight);
+    const width = Math.max(body.offsetWidth, documentElement.clientWidth, documentElement.offsetWidth);
+    this.setState({ height, width }) // eslint-disable-line
 
-    injectGlobal`${globalStyles}`;
+    this.scrollbarWidth = getScrollbarWidth();
+
+    // add global styles here to get them in the production server side rendering
+    injectGlobal`${globalStyles}`; // eslint-disable-line
   }
 
   componentWillReceiveProps(nextProps) {
@@ -39,23 +42,18 @@ class App extends Component {
     }
   }
 
-  handleToggleOverlay = () => {
-    this.setState({ showOverlay: !this.state.showOverlay });
+  handleAnimationEnd = () => {
+    this.setState({ withCanvasAnimation: '' });
   };
 
-  handleRestartAnimation = e => {
-    e.preventDefault();
-
+  handleRestartAnimation = e =>
     this.setState({
       withPostOverlay: '', // hide post overlay when restarting animation
-      restartCanvas: { type: e.target.name },
+      withCanvasAnimation: e.target.name,
     });
-  };
-
-  handleStopAnimation = () => this.setState({ restartCanvas: null });
 
   render() {
-    const { maxHeight, maxWidth, showOverlay, restartCanvas, withPostOverlay } = this.state;
+    const { height, width, withPostOverlay, withCanvasAnimation } = this.state;
 
     return (
       <div>
@@ -66,49 +64,71 @@ class App extends Component {
             keywords="personal blog, web development"
           />
           <noscript innerHTML="<style>.no-js-overlay{display: none;}</style>" />
-          <body className={showOverlay && 'no-overflow'} />
         </Helmet>
-        {!isIE() && <Overlay showOverlay={showOverlay} class="no-js-overlay" />}
         <MobileLandscapeOverlay>
           <p>Congratulations, you have broken the Internet!</p>
         </MobileLandscapeOverlay>
-        <CanvasLoader
-          height={maxHeight}
-          width={maxWidth}
-          onToggleOverlay={this.handleToggleOverlay}
-          shouldRestart={restartCanvas}
-          onStopAnimation={this.handleStopAnimation}
-        >
-          <div style={{ height: '100%' }}>
-            {maxHeight && maxWidth ? (
-              <main style={{ height: '100%' }}>
-                <Route
-                  exact
-                  path="/"
-                  component={routerProps => (
-                    <Home
-                      {...this.props}
-                      handleRestartAnimation={this.handleRestartAnimation}
-                      withPostOverlay={withPostOverlay}
-                      {...routerProps}
+        <div style={{ height: '100%' }}>
+          {!isIE() && withCanvasAnimation && <ColorOverlay />}
+          {height && width ? (
+            <main style={{ height: '100%' }}>
+              <Route
+                exact
+                path="/"
+                component={routerProps => (
+                  <Home
+                    // {...this.props}
+                    handleRestartAnimation={this.handleRestartAnimation}
+                    withPostOverlay={withPostOverlay}
+                    scrollbarWidth={this.scrollbarWidth}
+                    {...routerProps}
+                  />
+                )}
+              />
+              <Route
+                path="/post/:slug"
+                component={routerProps => <BlogPost scrollbarWidth={this.scrollbarWidth} {...routerProps} />}
+              />
+              {/* <Route
+                path="/post/:slug"
+                component={routerProps => (
+                  <PostsContext.Consumer>
+                    {staticData => <WhatsThis staticData={staticData} {...routerProps} />}
+                  </PostsContext.Consumer>
+                )}
+              /> */}
+              {!isIE() &&
+                withCanvasAnimation && (
+                  <CanvasLoader
+                    height={height}
+                    width={width}
+                    type={withCanvasAnimation}
+                    onAnimationEnd={this.handleAnimationEnd}
+                  >
+                    <Route
+                      exact
+                      path="/"
+                      component={routerProps => (
+                        <Home
+                          {...this.props}
+                          handleRestartAnimation={this.handleRestartAnimation}
+                          withPostOverlay={withPostOverlay}
+                          scrollbarWidth={this.scrollbarWidth}
+                          {...routerProps}
+                        />
+                      )}
                     />
-                  )}
-                />
-                <Route path="/post/:slug" component={BlogPost} />
-                {/* <Route
-                  path="/post/:slug"
-                  component={routerProps => (
-                    <PostsContext.Consumer>
-                      {staticData => <WhatsThis staticData={staticData} {...routerProps} />}
-                    </PostsContext.Consumer>
-                  )}
-                /> */}
-              </main>
-            ) : (
-              ''
-            )}
-          </div>
-        </CanvasLoader>
+                    <Route
+                      path="/post/:slug"
+                      component={routerProps => <BlogPost scrollbarWidth={this.scrollbarWidth} {...routerProps} />}
+                    />
+                  </CanvasLoader>
+                )}
+            </main>
+          ) : (
+            ''
+          )}
+        </div>
       </div>
     );
   }

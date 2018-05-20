@@ -7,8 +7,6 @@ import About from '../../sections/About/About';
 
 import posts from '../../posts/';
 
-import { getScrollbarWidth } from '../../utils/helpers';
-
 import { sizes } from '../../styles/variables';
 import {
   Wrapper,
@@ -35,8 +33,6 @@ const latestPost = Object.keys(posts).reduce(
 class Home extends Component {
   constructor(props) {
     super(props);
-
-    this.scrollbarWidth = getScrollbarWidth();
 
     this.state = {
       overlayPost: {
@@ -130,6 +126,7 @@ class Home extends Component {
   }
 
   handleShowOverlayPost = (type, slug) => {
+    const { history, scrollbarWidth } = this.props;
     const width = this[type].clientWidth + 4;
     const height = this[type].clientHeight + 4;
     const x = this[type].offsetLeft;
@@ -151,7 +148,7 @@ class Home extends Component {
         const handler = () => {
           this.postOverlayRef.removeEventListener('animationend', handler);
           // in case of router navigate here
-          this.props.history.push(slug);
+          history.push(slug);
         };
 
         this.postOverlayRef.addEventListener('animationend', handler);
@@ -163,7 +160,7 @@ class Home extends Component {
             animating: 'in',
             startWidth: `${width}px`,
             startHeight: `${height}px`,
-            finishWidth: `calc(100% - ${100 - this.scrollbarWidth}px)`,
+            finishWidth: `calc(100% - ${100 - scrollbarWidth}px)`,
             finishHeight: `calc(100vh - 100px)`,
             startX: `${x}px`,
             startY: `${y}px`,
@@ -180,7 +177,7 @@ class Home extends Component {
   bindLatestPostRef = node => this.latestPostRef = node // eslint-disable-line
 
   render() {
-    const { handleRestartAnimation } = this.props;
+    const { handleRestartAnimation, scrollbarWidth } = this.props;
     const { overlayPost } = this.state;
     const { animation, isHidden } = overlayPost;
     const overlayPostDimensions = {
@@ -189,7 +186,7 @@ class Home extends Component {
     };
 
     return (
-      <Wrapper>
+      <Wrapper scrollbarWidth={scrollbarWidth}>
         <BorderWrapper animating={overlayPost.animating}>
           <GridWrapper>
             <LatestPost
@@ -250,7 +247,7 @@ class Home extends Component {
               animation={animation === fadeInExpand ? fadeIn : fadeOut}
               animationDelay={animation === fadeInExpand ? '.2s' : '0s'}
             >
-              <CloseBtn>home</CloseBtn>
+              <CloseBtn>&lt;&lt;&lt; home</CloseBtn>
               <h1>{latestPost.title}</h1>
               {latestPost.content}
             </PostOverlayContentWrapper>
