@@ -219,11 +219,14 @@ class CanvasLoader extends Component {
   };
 
   render() {
-    const { width, height } = this.props;
+    const { width, height, children } = this.props;
 
     return ReactDOM.createPortal(
       <CanvasWrapper width={width} height={height}>
         <canvas ref={this.canvas} width={getPowerOf2(width)} height={getPowerOf2(height)} />
+        <SVGWrapper height={height} width={width} scrollTop={window.pageYOffset}>
+          {children}
+        </SVGWrapper>
       </CanvasWrapper>,
       this.canvasOverlayContainer
     );

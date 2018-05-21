@@ -81,6 +81,7 @@ class App extends Component {
                     handleRestartAnimation={this.handleRestartAnimation}
                     withPostOverlay={withPostOverlay}
                     scrollbarWidth={this.scrollbarWidth}
+                    animating={withCanvasAnimation}
                     {...routerProps}
                   />
                 )}
@@ -114,6 +115,7 @@ class App extends Component {
                           handleRestartAnimation={this.handleRestartAnimation}
                           withPostOverlay={withPostOverlay}
                           scrollbarWidth={this.scrollbarWidth}
+                          animating={withCanvasAnimation}
                           {...routerProps}
                         />
                       )}

@@ -8,6 +8,7 @@
 
 ## TODO:
 
+ - fix lighthouse audit issues
  - fix antialiasing issue (maybe it's mipmapping) (seems to be working now, find out why)
  - add dynamic imports when webpack fixes bug
  - add something build on Rust and WebAssembly in one of the cells

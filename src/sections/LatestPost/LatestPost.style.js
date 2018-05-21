@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { colors, fontFamily } from '../../styles/variables';
 
 export const LatestPostWrapper = styled.div`
+  position: relative;
   grid-column: auto / span 3;
   grid-row: auto / span 2;
   background-color: ${colors.BACKGROUND_COLOR};
@@ -21,6 +22,8 @@ export const Content = styled.div`
 `;
 
 export const RollingText = styled.div`
+  position: absolute;
+  bottom: 0;
   border-top: 2px solid ${colors.FONT_BASE};
   overflow: hidden;
   margin-top: 0em;

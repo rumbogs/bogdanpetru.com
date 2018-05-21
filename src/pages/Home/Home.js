@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 
+import CanvasScreenOverlay from '../../components/CanvasScreenOverlay/CanvasScreenOverlay';
+
 import LatestPost from '../../sections/LatestPost/LatestPost';
 import RecentPosts from '../../sections/RecentPosts/RecentPosts';
 import FollowingPhotoWithCanvasEffects from '../../sections/FollowingPhotoWithCanvasEffects/FollowingPhotoWithCanvasEffects';
 import About from '../../sections/About/About';
+import EndlessHole from '../../sections/EndlessHole/EndlessHole';
 
 import posts from '../../posts/';
 
@@ -12,7 +15,6 @@ import {
   Wrapper,
   GridWrapper,
   BorderWrapper,
-  Canvas1,
   Canvas2,
   Canvas3,
   Canvas4,
@@ -177,7 +179,7 @@ class Home extends Component {
   bindLatestPostRef = node => this.latestPostRef = node // eslint-disable-line
 
   render() {
-    const { handleRestartAnimation, scrollbarWidth } = this.props;
+    const { handleRestartAnimation, scrollbarWidth, animating } = this.props;
     const { overlayPost } = this.state;
     const { animation, isHidden } = overlayPost;
     const overlayPostDimensions = {
@@ -194,9 +196,15 @@ class Home extends Component {
               bindLatestPostRef={this.bindLatestPostRef}
               post={latestPost}
             />
-            <Canvas1>
-              <div style={{ height: '100%', minHeight: '100px', background: '#ddd' }} />
-            </Canvas1>
+            <CanvasScreenOverlay
+              animating={animating}
+              style={{
+                gridColumn: 'auto / span 1',
+                gridRow: 'auto / span 1',
+              }}
+            >
+              <EndlessHole />
+            </CanvasScreenOverlay>
             <RecentPosts bindRecentPostsRef={this.bindRecentPostsRef} onShowOverlayPost={this.handleShowOverlayPost} />
             {/* <StaticCanvas
               width={0}

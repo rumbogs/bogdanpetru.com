@@ -124,15 +124,6 @@ ${media.s`
   padding-bottom: 0;
 `}
 `;
-const Canvas1 = styled.div`
-  grid-column: auto;
-  grid-row: auto;
-  background-color: ${colors.BACKGROUND_COLOR};
-
-  ${media.s`
-    display: none;
-  `};
-`;
 const Canvas2 = styled.div`
   grid-column: auto;
   grid-row: auto;
@@ -267,7 +258,6 @@ export {
   Wrapper,
   GridWrapper,
   BorderWrapper,
-  Canvas1,
   Canvas2,
   Canvas3,
   Canvas4,
