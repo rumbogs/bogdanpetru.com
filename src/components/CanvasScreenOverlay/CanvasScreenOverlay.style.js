@@ -13,4 +13,16 @@ export const ClosedOverlay = styled.div`
   right: 0;
   bottom: 0;
   background-color: ${colors.CLOSED_TV};
+
+  p {
+    display: block;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 48%;
+    font-size: 32px;
+    margin: 0;
+    color: #aaa;
+    font-style: italic;
+  }
 `;

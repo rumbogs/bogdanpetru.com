@@ -13,7 +13,9 @@ class CanvasScreenOverlay extends Component {
     return (
       <Wrapper style={style}>
         {/* {off && <ClosedOverlay />} */}
-        <ClosedOverlay />
+        <ClosedOverlay>
+          <p>WIP</p>
+        </ClosedOverlay>
         {children}
       </Wrapper>
     );

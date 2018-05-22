@@ -218,11 +218,41 @@ class Home extends Component {
             /> */}
             <FollowingPhotoWithCanvasEffects onRestartAnimation={handleRestartAnimation} />
             <Canvas2>
-              <div style={{ height: '100%', minHeight: '100px', background: '#ddd' }} />
+              <div style={{ position: 'relative', height: '100%', minHeight: '100px', background: '#ddd' }}>
+                <p
+                  style={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '48%',
+                    transform: 'translate(-50%, -50%)',
+                    margin: 0,
+                    fontSize: '32px',
+                    fontStyle: 'italic',
+                    color: '#aaa',
+                  }}
+                >
+                  WIP
+                </p>
+              </div>
             </Canvas2>
             <About />
             <Canvas3>
-              <div style={{ height: '100%', minHeight: '100px', background: '#ddd' }} />
+              <div style={{ position: 'relative', height: '100%', minHeight: '100px', background: '#ddd' }}>
+                <p
+                  style={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '48%',
+                    transform: 'translate(-50%, -50%)',
+                    margin: 0,
+                    fontSize: '32px',
+                    fontStyle: 'italic',
+                    color: '#aaa',
+                  }}
+                >
+                  WIP
+                </p>
+              </div>
             </Canvas3>
             {/* <StaticCanvas
               width={0}
@@ -235,7 +265,22 @@ class Home extends Component {
               clock={clock}
             /> */}
             <Canvas4>
-              <div style={{ height: '100%', minHeight: '100px', background: '#ddd' }} />
+              <div style={{ position: 'relative', height: '100%', minHeight: '100px', background: '#ddd' }}>
+                <p
+                  style={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '48%',
+                    transform: 'translate(-50%, -50%)',
+                    margin: 0,
+                    fontSize: '32px',
+                    fontStyle: 'italic',
+                    color: '#aaa',
+                  }}
+                >
+                  WIP
+                </p>
+              </div>
             </Canvas4>
             {/* <StaticCanvas
               width={0}
