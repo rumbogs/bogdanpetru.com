@@ -15,9 +15,6 @@ import {
   Wrapper,
   GridWrapper,
   BorderWrapper,
-  Canvas2,
-  Canvas3,
-  Canvas4,
   PostOverlay,
   fadeInExpand,
   shrinkFadeOut,
@@ -206,92 +203,29 @@ class Home extends Component {
               <EndlessHole />
             </CanvasScreenOverlay>
             <RecentPosts bindRecentPostsRef={this.bindRecentPostsRef} onShowOverlayPost={this.handleShowOverlayPost} />
-            {/* <StaticCanvas
-              width={0}
-              height={200}
-              column="6 / span 3"
-              row="1 / span 2"
-              border={['top', 'right', 'bottom']}
-              material={material}
-              uniforms={uniforms}
-              clock={clock}
-            /> */}
             <FollowingPhotoWithCanvasEffects onRestartAnimation={handleRestartAnimation} />
-            <Canvas2>
-              <div style={{ position: 'relative', height: '100%', minHeight: '100px', background: '#ddd' }}>
-                <p
-                  style={{
-                    position: 'absolute',
-                    top: '50%',
-                    left: '48%',
-                    transform: 'translate(-50%, -50%)',
-                    margin: 0,
-                    fontSize: '32px',
-                    fontStyle: 'italic',
-                    color: '#aaa',
-                  }}
-                >
-                  WIP
-                </p>
-              </div>
-            </Canvas2>
+            <CanvasScreenOverlay
+              animating={animating}
+              style={{
+                gridColumn: 'auto / span 1',
+                gridRow: 'auto / span 1',
+              }}
+            />
             <About />
-            <Canvas3>
-              <div style={{ position: 'relative', height: '100%', minHeight: '100px', background: '#ddd' }}>
-                <p
-                  style={{
-                    position: 'absolute',
-                    top: '50%',
-                    left: '48%',
-                    transform: 'translate(-50%, -50%)',
-                    margin: 0,
-                    fontSize: '32px',
-                    fontStyle: 'italic',
-                    color: '#aaa',
-                  }}
-                >
-                  WIP
-                </p>
-              </div>
-            </Canvas3>
-            {/* <StaticCanvas
-              width={0}
-              height={324}
-              column="6 / span 3"
-              row="8 / span 2"
-              border={['top', 'right', 'bottom']}
-              material={material}
-              uniforms={uniforms}
-              clock={clock}
-            /> */}
-            <Canvas4>
-              <div style={{ position: 'relative', height: '100%', minHeight: '100px', background: '#ddd' }}>
-                <p
-                  style={{
-                    position: 'absolute',
-                    top: '50%',
-                    left: '48%',
-                    transform: 'translate(-50%, -50%)',
-                    margin: 0,
-                    fontSize: '32px',
-                    fontStyle: 'italic',
-                    color: '#aaa',
-                  }}
-                >
-                  WIP
-                </p>
-              </div>
-            </Canvas4>
-            {/* <StaticCanvas
-              width={0}
-              height={324}
-              column="1 / span 2"
-              row="8 / span 2"
-              border={['left', 'bottom']}
-              material={material}
-              uniforms={uniforms}
-              clock={clock}
-            /> */}
+            <CanvasScreenOverlay
+              animating={animating}
+              style={{
+                gridColumn: 'auto / span 1',
+                gridRow: 'auto / span 1',
+              }}
+            />
+            <CanvasScreenOverlay
+              animating={animating}
+              style={{
+                gridColumn: 'auto / span 1',
+                gridRow: 'auto / span 1',
+              }}
+            />
           </GridWrapper>
         </BorderWrapper>
         {!isHidden && (
