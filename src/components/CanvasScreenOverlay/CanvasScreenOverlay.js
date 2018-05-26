@@ -8,13 +8,15 @@ import { Wrapper, ClosedOverlay } from './CanvasScreenOverlay.style';
 
 class CanvasScreenOverlay extends Component {
   state = {
-    off: this.props.animating,
+    on: !this.props.animating,
   };
 
   componentDidMount() {
-    this.width = this.canvas.current.clientWidth;
-    this.height = this.canvas.current.clientHeight;
-    this.init();
+    if (!this.props.animating) {
+      this.width = this.canvas.current.clientWidth;
+      this.height = this.canvas.current.clientHeight;
+      this.init();
+    }
   }
 
   timer = 0;
@@ -88,14 +90,14 @@ class CanvasScreenOverlay extends Component {
 
   render() {
     const { children, style } = this.props;
-    const { off } = this.state;
+    const { on } = this.state;
     return (
       <Wrapper style={style}>
-        {/* {off && <ClosedOverlay />} */}
-        <ClosedOverlay>
-          {/* <p>WIP</p> */}
-          <canvas ref={this.canvas} style={{ width: '100%', height: '100%', minHeight: '150px' }} />
-        </ClosedOverlay>
+        {on && (
+          <ClosedOverlay>
+            <canvas ref={this.canvas} style={{ width: '100%', height: '100%', minHeight: '150px' }} />
+          </ClosedOverlay>
+        )}
         {children}
       </Wrapper>
     );

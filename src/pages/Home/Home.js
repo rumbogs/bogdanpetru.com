@@ -194,7 +194,7 @@ class Home extends Component {
               post={latestPost}
             />
             <CanvasScreenOverlay
-              animating={animating}
+              animating
               style={{
                 gridColumn: 'auto / span 1',
                 gridRow: 'auto / span 1',
@@ -205,7 +205,7 @@ class Home extends Component {
             <RecentPosts bindRecentPostsRef={this.bindRecentPostsRef} onShowOverlayPost={this.handleShowOverlayPost} />
             <FollowingPhotoWithCanvasEffects onRestartAnimation={handleRestartAnimation} />
             <CanvasScreenOverlay
-              animating={animating}
+              animating={false}
               style={{
                 gridColumn: 'auto / span 1',
                 gridRow: 'auto / span 1',
@@ -213,14 +213,14 @@ class Home extends Component {
             />
             <About />
             <CanvasScreenOverlay
-              animating={animating}
+              animating={false}
               style={{
                 gridColumn: 'auto / span 1',
                 gridRow: 'auto / span 1',
               }}
             />
             <CanvasScreenOverlay
-              animating={animating}
+              animating={false}
               style={{
                 gridColumn: 'auto / span 1',
                 gridRow: 'auto / span 1',

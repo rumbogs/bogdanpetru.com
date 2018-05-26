@@ -74,17 +74,17 @@ class EndlessHole extends Component {
 
     this.drawScene(0, 0);
 
-    // const self = this;
-    // window.addEventListener('mousemove', function handleMouseMove(e) {
-    //   const normalizedX = e.pageX / self.windowWidth;
-    //   const normalizedY = e.pageY / self.windowHeight;
-    //   self.drawScene(normalizedX, normalizedY);
+    const self = this;
+    window.addEventListener('mousemove', function handleMouseMove(e) {
+      const normalizedX = e.pageX / self.windowWidth;
+      const normalizedY = e.pageY / self.windowHeight;
+      self.drawScene(normalizedX, normalizedY);
 
-    //   // TODO: correct this thing
-    //   setTimeout(() => {
-    //     window.removeEventListener('mousemove', handleMouseMove);
-    //   }, 5000);
-    // });
+      // TODO: correct this thing
+      setTimeout(() => {
+        window.removeEventListener('mousemove', handleMouseMove);
+      }, 5000);
+    });
   };
 
   canvas = React.createRef();
