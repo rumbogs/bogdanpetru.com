@@ -14,7 +14,8 @@ class EndlessHole extends Component {
 
   drawScene = (x, y) => {
     if (this.canvas.current) {
-      const { width, height } = this.canvas.current;
+      const width = this.canvas.current.clientWidth;
+      const height = this.canvas.current.clientHeight;
       this.gl.canvas.width = width;
       this.gl.canvas.height = height;
 
