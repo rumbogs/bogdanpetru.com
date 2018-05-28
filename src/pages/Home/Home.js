@@ -35,7 +35,7 @@ class Home extends Component {
 
     this.state = {
       overlayPost: {
-        isHidden: false,
+        isHidden: true,
         animating: '',
         width: 0,
         height: 0,
@@ -115,7 +115,7 @@ class Home extends Component {
         this.postOverlayRef.removeEventListener('animationend', handler);
         this.setState({
           overlayPost: {
-            isHidden: false,
+            isHidden: true,
           },
         });
       };
@@ -137,6 +137,7 @@ class Home extends Component {
       {
         overlayPost: {
           ...this.state.overlayPost,
+          isHidden: false,
           width: `${width}px`,
           height: `${height}px`,
           x: `${x}px`,

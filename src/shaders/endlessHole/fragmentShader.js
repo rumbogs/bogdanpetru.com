@@ -4,19 +4,18 @@ precision mediump float;
 uniform vec2 u_mousePos;
 varying vec2 u_fragRes;
 
-vec3 rectOutline (vec2 st, float yAR, float xAR, float xDelta, float yDelta, float xW, float yW, float xOffset, float yOffset, vec3 startColor, vec3 endColor) {
-  float yMask = st.y * yAR;
-  float xMask = st.x * xAR;
+vec3 rectOutline (vec2 st, vec2 aspectRatio, vec2 diagDelta, vec4 width, vec4 offset, vec3 startColor, vec3 endColor) {
+  vec2 mask = st * aspectRatio;
   vec3 bb = mix(
     startColor,
     endColor,
     smoothstep(
-      yOffset,
-      yW + yOffset,
+      offset.z,
+      width.z + offset.z,
       mix(
         1.0,
         st.y,
-        step(yMask + 0.000001, st.x) - step(1.0 - yMask - 0.0001, st.x) // add very small values to avoid artifacts
+        step(mask.y, st.x) - step(1.0 - mask.y, st.x)
       )
     )
   );
@@ -24,19 +23,19 @@ vec3 rectOutline (vec2 st, float yAR, float xAR, float xDelta, float yDelta, flo
   vec3 bbWithOffset = mix(
     endColor,
     bb,
-    step(yOffset, st.y)
+    step(offset.z, st.y)
   );
 
   vec3 lb = mix(
     startColor,
     endColor,
     smoothstep(
-      xOffset, 
-      xW + xOffset,
+      offset.y, 
+      width.y + offset.y,
       mix(
         1.0,
         st.x,
-        step(xMask, st.y) - step(1.0 - xMask, st.y)
+        step(mask.x, st.y) - step(1.0 - mask.x, st.y)
       )
     )
   );
@@ -44,19 +43,19 @@ vec3 rectOutline (vec2 st, float yAR, float xAR, float xDelta, float yDelta, flo
   vec3 lbWithOffset = mix(
     endColor,
     lb,
-    step(xOffset, st.x)
+    step(offset.y, st.x)
   );
 
   vec3 tb = mix(
     startColor,
     endColor,
     smoothstep(
-      yOffset,
-      yW + yOffset,
+      offset.x,
+      width.x + offset.x,
       mix(
         1.0,
         1.0 - st.y,
-        step(xMask - xDelta, st.y) - step(xMask, 1.0 - st.y)
+        step(mask.x - diagDelta.x, st.y) - step(mask.x, 1.0 - st.y)
       )
     )
   );
@@ -64,19 +63,19 @@ vec3 rectOutline (vec2 st, float yAR, float xAR, float xDelta, float yDelta, flo
   vec3 tbWithOffset = mix(
     endColor,
     tb,
-    step(yOffset, 1.0 - st.y)
+    step(offset.x, 1.0 - st.y)
   );
 
   vec3 rb = mix(
     startColor,
     endColor,
     smoothstep(
-      xOffset,
-      xW + xOffset,
+      offset.w,
+      width.w + offset.w,
       mix(
         1.0,
         1.0 - st.x,
-        step(yMask - yDelta + 0.00001, st.x) - step(yMask + 0.000001, 1.0 - st.x) // add small values to avoid artifacts
+        step(mask.y - diagDelta.y, st.x) - step(mask.y, 1.0 - st.x) // add small values to avoid artifacts
       )
     )
   );
@@ -84,7 +83,7 @@ vec3 rectOutline (vec2 st, float yAR, float xAR, float xDelta, float yDelta, flo
   vec3 rbWithOffset = mix(
     endColor,
     rb,
-    step(xOffset, 1.0 - st.x)
+    step(offset.w, 1.0 - st.x)
   );
 
   return 
@@ -97,24 +96,52 @@ vec3 rectOutline (vec2 st, float yAR, float xAR, float xDelta, float yDelta, flo
 
 void main() {
   vec2 st = gl_FragCoord.xy / u_fragRes.xy; // 0 -> 1
-  const float viewportHalf = 0.5;
+  const float HALF_VIEWPORT = 0.5;
+  const float WIDTH = 0.1;
 
-  float yAR = u_fragRes.y / u_fragRes.x;
-  float xAR = 1.0 / yAR;
-  float xDelta = xAR - 1.0;
-  float yDelta = yAR - 1.0;
+  // find aspect ratio for both directions
+  vec2 aspectRatio = vec2(u_fragRes.x / u_fragRes.y, u_fragRes.y / u_fragRes.x);
 
-  const float yWidth = 0.1;
-  float xWidth = yWidth * yAR;
+  // find diagonal offset for top and right border angle
+  vec2 diagDelta = aspectRatio - 1.0;
+
+  // find width of border for each side, based on mouse position
+  vec4 width = vec4(
+    1.0 - u_mousePos.y,
+    (1.0 + u_mousePos.x) * aspectRatio.y,
+    1.0 + u_mousePos.y,
+    (1.0 - u_mousePos.x) * aspectRatio.y
+  ) * WIDTH;
 
   vec3 purple = vec3(0.6, 0.0, 0.6);
   vec3 black = vec3(0.0);
   vec3 color = black;
 
-  for( float yOffset = 0.0; yOffset <= viewportHalf; yOffset += yWidth * 0.7) {
-    float xOffset = yOffset * yAR;
-    color += rectOutline(st, yAR, xAR, xDelta, yDelta, xWidth, yWidth, xOffset, yOffset, purple * pow(0.9 - yOffset, 4.0), black);
-  }
+  // for( float i = 0.0; i <= 5.0; i++ ) {
+  //   vec4 offset = width * i * 0.7;
+    
+  //   color += rectOutline(
+  //     st,
+  //     aspectRatio,
+  //     diagDelta,
+  //     width,
+  //     offset,
+  //     purple * pow(i * 0.5, 4.0),
+  //     black
+  //   );
+  // }
+
+  vec4 offset = width * 1.0 * 0.7;
+
+  color += rectOutline(
+    st,
+    aspectRatio,
+    diagDelta,
+    width,
+    offset,
+    purple,
+    black
+  );
 
   gl_FragColor = vec4(color, 1.0);
 }

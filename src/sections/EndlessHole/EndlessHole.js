@@ -7,9 +7,21 @@ import { createShader, createProgram } from '../../utils/helpers';
 
 class EndlessHole extends Component {
   componentDidMount() {
+    console.log('componentdidMount');
     this.windowWidth = document.documentElement.clientWidth;
     this.windowHeight = document.documentElement.clientHeight;
+    const canvasPos = this.canvas.current.getBoundingClientRect();
+    this.canvasCenterY = canvasPos.top + Math.floor(canvasPos.height / 2);
+    this.canvasCenterX = canvasPos.left + Math.floor(canvasPos.width / 2);
+    console.log('compoenntDidmiunt, canvas x: ', this.canvasCenterX);
+    console.log('compoenntDidmiunt, canvas y: ', this.canvasCenterY);
+    this.largestWidth = Math.max(this.windowWidth - this.canvasCenterX, this.canvasCenterX);
+    this.largestHeight = Math.max(this.windowHeight - this.canvasCenterY, this.canvasCenterY);
     this.init();
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('mousemove', this.mouseMoveHandler);
   }
 
   drawScene = (x, y) => {
@@ -75,22 +87,26 @@ class EndlessHole extends Component {
 
     this.drawScene(0, 0);
 
-    const self = this;
-    window.addEventListener('mousemove', function handleMouseMove(e) {
-      const normalizedX = e.pageX / self.windowWidth;
-      const normalizedY = e.pageY / self.windowHeight;
-      self.drawScene(normalizedX, normalizedY);
+    window.addEventListener('mousemove', this.mouseMoveHandler);
+  };
 
-      // TODO: correct this thing
-      setTimeout(() => {
-        window.removeEventListener('mousemove', handleMouseMove);
-      }, 5000);
-    });
+  mouseMoveHandler = e => {
+    const { pageX, pageY } = e;
+    const mouseX = 1 / this.largestWidth * (pageX - this.canvasCenterX);
+    const mouseY = 1 / this.largestHeight * (pageY - this.canvasCenterY);
+
+    this.drawScene(mouseX, Math.min(mouseY, 1.0));
+
+    // TODO: correct this thing
+    // setTimeout(() => {
+    //   window.removeEventListener('mousemove', handleMouseMove);
+    // }, 5000);
   };
 
   canvas = React.createRef();
 
   render() {
+    console.log('render');
     return <canvas ref={this.canvas} style={{ width: '100%', height: '100%', minHeight: '150px' }} />;
   }
 }
