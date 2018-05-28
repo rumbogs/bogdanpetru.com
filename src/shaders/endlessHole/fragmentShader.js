@@ -4,7 +4,7 @@ precision mediump float;
 uniform vec2 u_mousePos;
 varying vec2 u_fragRes;
 
-vec3 rectOutline (vec2 st, vec2 aspectRatio, vec2 diagDelta, vec4 width, vec4 offset, vec3 startColor, vec3 endColor) {
+vec3 rectOutline (vec2 st, vec2 aspectRatio, vec2 diagDelta, vec2 mouse, vec4 width, vec4 offset, vec3 startColor, vec3 endColor) {
   vec2 mask = st * aspectRatio;
   vec3 bb = mix(
     startColor,
@@ -15,7 +15,7 @@ vec3 rectOutline (vec2 st, vec2 aspectRatio, vec2 diagDelta, vec4 width, vec4 of
       mix(
         1.0,
         st.y,
-        step(mask.y, st.x) - step(1.0 - mask.y, st.x)
+        step((1.0 - mouse.y) * st.y, st.x) - step(1.0 - (1.0 - mouse.y) * mask.y, st.x)
       )
     )
   );
@@ -35,7 +35,7 @@ vec3 rectOutline (vec2 st, vec2 aspectRatio, vec2 diagDelta, vec4 width, vec4 of
       mix(
         1.0,
         st.x,
-        step(mask.x, st.y) - step(1.0 - mask.x, st.y)
+        step((1.0 - mouse.y) * st.x, st.y) - step(1.0 - (1.0 - mouse.x) * mask.x, st.y)
       )
     )
   );
@@ -88,9 +88,9 @@ vec3 rectOutline (vec2 st, vec2 aspectRatio, vec2 diagDelta, vec4 width, vec4 of
 
   return 
     bbWithOffset +
-    lbWithOffset +
-    tbWithOffset +
-    rbWithOffset
+    lbWithOffset
+    // tbWithOffset +
+    // rbWithOffset
   ;
 }
 
@@ -108,9 +108,9 @@ void main() {
   // find width of border for each side, based on mouse position
   vec4 width = vec4(
     1.0 - u_mousePos.y,
-    (1.0 + u_mousePos.x) * aspectRatio.y,
+    (1.0 - u_mousePos.x) * aspectRatio.y,
     1.0 + u_mousePos.y,
-    (1.0 - u_mousePos.x) * aspectRatio.y
+    (1.0 + u_mousePos.x) * aspectRatio.y
   ) * WIDTH;
 
   vec3 purple = vec3(0.6, 0.0, 0.6);
@@ -131,12 +131,13 @@ void main() {
   //   );
   // }
 
-  vec4 offset = width * 1.0 * 0.7;
+  vec4 offset = width * 0.0 * 0.7;
 
   color += rectOutline(
     st,
     aspectRatio,
     diagDelta,
+    u_mousePos,
     width,
     offset,
     purple,
