@@ -17,6 +17,9 @@ class EndlessHole extends Component {
     console.log('compoenntDidmiunt, canvas y: ', this.canvasCenterY);
     this.largestWidth = Math.max(this.windowWidth - this.canvasCenterX, this.canvasCenterX);
     this.largestHeight = Math.max(this.windowHeight - this.canvasCenterY, this.canvasCenterY);
+    this.minMouseX = 1 / this.largestWidth * this.canvasCenterX;
+    this.minMouseY = 1 / this.largestHeight * this.canvasCenterY;
+
     this.init();
   }
 
@@ -54,6 +57,7 @@ class EndlessHole extends Component {
 
       this.gl.uniform2f(this.resolutionLocation, width, height);
       this.gl.uniform2f(this.mousePosLocation, x, y);
+      this.gl.uniform2f(this.minMousePosLocation, this.minMouseX, this.minMouseY);
 
       const primitiveType = this.gl.TRIANGLES;
       const count = 6;
@@ -80,6 +84,7 @@ class EndlessHole extends Component {
     // get Uniforms
     this.resolutionLocation = this.gl.getUniformLocation(this.program, 'u_resolution');
     this.mousePosLocation = this.gl.getUniformLocation(this.program, 'u_mousePos');
+    this.minMousePosLocation = this.gl.getUniformLocation(this.program, 'u_minMousePos');
 
     const positionBuffer = this.gl.createBuffer();
 

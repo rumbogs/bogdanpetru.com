@@ -2,10 +2,64 @@ export default `
 precision mediump float;
 
 uniform vec2 u_mousePos;
+uniform vec2 u_minMousePos;
 varying vec2 u_fragRes;
 
-vec3 rectOutline (vec2 st, vec2 aspectRatio, vec2 diagDelta, vec2 mouse, vec4 width, vec4 offset, vec3 startColor, vec3 endColor) {
-  vec2 mask = st * aspectRatio;
+vec3 rectOutline (vec2 st, vec2 aspectRatio, vec2 diagDelta, vec4 width, vec4 offset, vec3 startColor, vec3 endColor) {
+  // float bLX = st.x * 1.0 / (1.0 - mouse.x);
+  // float bLY = st.y * (1.0 - mouse.y);
+  // float lTX = 1.0 - 1.0 / (1.0 - mouse.x) * st.x;
+  // float lTY = st.y * (mouse.y) + (1.0 - mouse.y);
+  // float rBX = 1.0 - (1.0 - mouse.y) * st.y;
+  // float rBY = st.x * (1.0 - mouse.x) + mouse.x; // add mouse.x to keep graph origin at (1,0)
+
+  float rBX = st.x;
+  float rBY = 1.0 - st.y * aspectRatio.y;
+  float tRX = st.x * aspectRatio.x - diagDelta.x;
+  float tRY = st.y;
+  vec4 maskFunc = vec4(
+    //////// TOP ///////
+    // st.x, st.y
+    // step(
+    //   st.x,
+    //   st.y
+    // ) - step(
+    //   st.x * aspectRatio.x * (1.0 - u_mousePos.y),
+    //   1.0 - st.y
+    // ),
+    step(
+      1.0 - st.x * aspectRatio.x,
+      st.y
+    ) - step(
+      1.0 - st.x + aspectRatio.x,
+      1.0 - st.y * aspectRatio.y
+    ),
+    //////// LEFT ///////
+    step(
+      st.x * aspectRatio.x * (1.0 - u_mousePos.y),
+      1.0 - st.y
+    ) - step(
+      st.y * aspectRatio.y * (1.0 - u_mousePos.y + u_minMousePos.y),
+      st.x
+    ),
+    //////// BOTTOM ///////
+    step(
+      st.y * aspectRatio.y * (1.0 - u_mousePos.y + u_minMousePos.y), // adding minimum mouse y position keep values bigger than 0
+      st.x
+    ) - step(
+      1.0 - st.y * aspectRatio.y * (1.0 - u_mousePos.y + u_minMousePos.y),
+      st.x
+    ),
+    //////// RIGHT ///////
+    step(
+      st.y * (u_mousePos.y) + (1.0 - u_mousePos.y),
+      st.x
+    ) - step(
+      st.x,
+      1.0 - st.y * aspectRatio.y * (1.0 - u_mousePos.y + u_minMousePos.y)
+    )
+  );
+
   vec3 bb = mix(
     startColor,
     endColor,
@@ -15,7 +69,7 @@ vec3 rectOutline (vec2 st, vec2 aspectRatio, vec2 diagDelta, vec2 mouse, vec4 wi
       mix(
         1.0,
         st.y,
-        step((1.0 - mouse.y) * st.y, st.x) - step(1.0 - (1.0 - mouse.y) * mask.y, st.x)
+        maskFunc.z
       )
     )
   );
@@ -35,7 +89,7 @@ vec3 rectOutline (vec2 st, vec2 aspectRatio, vec2 diagDelta, vec2 mouse, vec4 wi
       mix(
         1.0,
         st.x,
-        step((1.0 - mouse.y) * st.x, st.y) - step(1.0 - (1.0 - mouse.x) * mask.x, st.y)
+        maskFunc.y
       )
     )
   );
@@ -55,7 +109,7 @@ vec3 rectOutline (vec2 st, vec2 aspectRatio, vec2 diagDelta, vec2 mouse, vec4 wi
       mix(
         1.0,
         1.0 - st.y,
-        step(mask.x - diagDelta.x, st.y) - step(mask.x, 1.0 - st.y)
+        maskFunc.x
       )
     )
   );
@@ -75,7 +129,7 @@ vec3 rectOutline (vec2 st, vec2 aspectRatio, vec2 diagDelta, vec2 mouse, vec4 wi
       mix(
         1.0,
         1.0 - st.x,
-        step(mask.y - diagDelta.y, st.x) - step(mask.y, 1.0 - st.x) // add small values to avoid artifacts
+        maskFunc.w
       )
     )
   );
@@ -88,9 +142,9 @@ vec3 rectOutline (vec2 st, vec2 aspectRatio, vec2 diagDelta, vec2 mouse, vec4 wi
 
   return 
     bbWithOffset +
-    lbWithOffset
-    // tbWithOffset +
-    // rbWithOffset
+    lbWithOffset +
+    tbWithOffset +
+    rbWithOffset
   ;
 }
 
@@ -137,7 +191,6 @@ void main() {
     st,
     aspectRatio,
     diagDelta,
-    u_mousePos,
     width,
     offset,
     purple,
