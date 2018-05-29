@@ -28,11 +28,11 @@ vec3 rectOutline (vec2 st, vec2 aspectRatio, vec2 diagDelta, vec4 width, vec4 of
     //   1.0 - st.y
     // ),
     step(
-      1.0 - st.x * aspectRatio.x,
-      st.y
+      1.0 - st.y - diagDelta.x,
+      1.0 - st.x * aspectRatio.x
     ) - step(
-      1.0 - st.x + aspectRatio.x,
-      1.0 - st.y * aspectRatio.y
+      st.y,
+      1.0 - st.x * aspectRatio.x
     ),
     //////// LEFT ///////
     step(
@@ -143,15 +143,15 @@ vec3 rectOutline (vec2 st, vec2 aspectRatio, vec2 diagDelta, vec4 width, vec4 of
   return 
     bbWithOffset +
     lbWithOffset +
-    tbWithOffset +
-    rbWithOffset
+    tbWithOffset
+    // rbWithOffset
   ;
 }
 
 void main() {
   vec2 st = gl_FragCoord.xy / u_fragRes.xy; // 0 -> 1
   const float HALF_VIEWPORT = 0.5;
-  const float WIDTH = 0.1;
+  const float WIDTH = 0.3;
 
   // find aspect ratio for both directions
   vec2 aspectRatio = vec2(u_fragRes.x / u_fragRes.y, u_fragRes.y / u_fragRes.x);
