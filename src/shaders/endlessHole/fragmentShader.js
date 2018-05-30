@@ -28,11 +28,11 @@ vec3 rectOutline (vec2 st, vec2 aspectRatio, vec2 diagDelta, vec4 width, vec4 of
     //   1.0 - st.y
     // ),
     step(
-      1.0 - st.y - diagDelta.x,
-      1.0 - st.x * aspectRatio.x
+      1.0 - st.y * (1.0 / (u_mousePos.y + u_minMousePos.y)) - (1.0 - (1.0 / (u_mousePos.y + u_minMousePos.y))),
+      1.0 - st.x
     ) - step(
-      st.y,
-      1.0 - st.x * aspectRatio.x
+      st.x * aspectRatio.x * (1.0 - u_mousePos.y),
+      1.0 - st.y
     ),
     //////// LEFT ///////
     step(
