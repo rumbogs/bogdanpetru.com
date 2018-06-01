@@ -1,9 +1,16 @@
 export default `
 precision mediump float;
 
+#define PI 3.14159265359
+
 uniform vec2 u_mousePos;
 uniform vec2 u_minMousePos;
 varying vec2 u_fragRes;
+
+mat2 rotate2d(float _angle){
+  return mat2(cos(_angle),-sin(_angle),
+              sin(_angle),cos(_angle));
+}
 
 vec3 rectOutline (vec2 st, vec2 aspectRatio, vec2 diagDelta, vec4 width, vec4 offset, vec3 startColor, vec3 endColor) {
   // float bLX = st.x * 1.0 / (1.0 - mouse.x);
@@ -28,7 +35,7 @@ vec3 rectOutline (vec2 st, vec2 aspectRatio, vec2 diagDelta, vec4 width, vec4 of
     //   1.0 - st.y
     // ),
     step(
-      1.0 - st.y * (1.0 / (u_mousePos.y + u_minMousePos.y)) - (1.0 - (1.0 / (u_mousePos.y + u_minMousePos.y))),
+      (1.0 - st.y * (1.0 / (u_mousePos.y + u_minMousePos.y)) - (1.0 - (1.0 / (u_mousePos.y + u_minMousePos.y)))) * (u_mousePos.y / 0.1),
       1.0 - st.x
     ) - step(
       st.x * aspectRatio.x * (1.0 - u_mousePos.y),
@@ -141,9 +148,9 @@ vec3 rectOutline (vec2 st, vec2 aspectRatio, vec2 diagDelta, vec4 width, vec4 of
   );
 
   return 
-    bbWithOffset +
-    lbWithOffset +
-    tbWithOffset
+    bbWithOffset
+    // lbWithOffset +
+    // tbWithOffset
     // rbWithOffset
   ;
 }
@@ -187,15 +194,23 @@ void main() {
 
   vec4 offset = width * 0.0 * 0.7;
 
-  color += rectOutline(
-    st,
-    aspectRatio,
-    diagDelta,
-    width,
-    offset,
-    purple,
-    black
-  );
+  vec3 bb = mix(purple, black, step(0.1, st.y));
+
+  st = rotate2d(PI * 0.2) * st;
+
+  vec3 rb = mix(purple, black, step(0.01, st.y));
+
+  color = bb + rb;
+
+  // color += rectOutline(
+  //   st,
+  //   aspectRatio,
+  //   diagDelta,
+  //   width,
+  //   offset,
+  //   purple,
+  //   black
+  // );
 
   gl_FragColor = vec4(color, 1.0);
 }
