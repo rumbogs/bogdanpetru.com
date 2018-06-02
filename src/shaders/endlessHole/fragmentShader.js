@@ -155,62 +155,92 @@ vec3 rectOutline (vec2 st, vec2 aspectRatio, vec2 diagDelta, vec4 width, vec4 of
   ;
 }
 
+// void main() {
+//   vec2 st = gl_FragCoord.xy / u_fragRes.xy; // 0 -> 1
+//   const float HALF_VIEWPORT = 0.5;
+//   const float WIDTH = 0.3;
+
+//   // find aspect ratio for both directions
+//   vec2 aspectRatio = vec2(u_fragRes.x / u_fragRes.y, u_fragRes.y / u_fragRes.x);
+
+//   // find diagonal offset for top and right border angle
+//   vec2 diagDelta = aspectRatio - 1.0;
+
+//   // find width of border for each side, based on mouse position
+//   vec4 width = vec4(
+//     1.0 - u_mousePos.y,
+//     (1.0 - u_mousePos.x) * aspectRatio.y,
+//     1.0 + u_mousePos.y,
+//     (1.0 + u_mousePos.x) * aspectRatio.y
+//   ) * WIDTH;
+
+//   vec3 purple = vec3(0.6, 0.0, 0.6);
+//   vec3 black = vec3(0.0);
+//   vec3 color = black;
+
+//   // for( float i = 0.0; i <= 5.0; i++ ) {
+//   //   vec4 offset = width * i * 0.7;
+    
+//   //   color += rectOutline(
+//   //     st,
+//   //     aspectRatio,
+//   //     diagDelta,
+//   //     width,
+//   //     offset,
+//   //     purple * pow(i * 0.5, 4.0),
+//   //     black
+//   //   );
+//   // }
+
+//   vec4 offset = width * 0.0 * 0.7;
+
+//   vec3 bb = mix(purple, black, step(0.1, st.y));
+
+//   st = rotate2d(PI * 0.2) * st;
+
+//   vec3 rb = mix(purple, black, step(0.01, st.y));
+
+//   color = bb + rb;
+
+//   // color += rectOutline(
+//   //   st,
+//   //   aspectRatio,
+//   //   diagDelta,
+//   //   width,
+//   //   offset,
+//   //   purple,
+//   //   black
+//   // );
+
+//   gl_FragColor = vec4(color, 1.0);
+// }
+
+float box(in vec2 _st, in vec2 _size){
+  _size = vec2(0.5) - _size * 0.5;
+  vec2 uv = smoothstep(
+    _size,
+    _size + vec2(0.1),
+    _st
+  ) * smoothstep(
+    _size,
+    _size + vec2(0.1),
+    vec2(1.0) - _st
+  );
+
+  return uv.x * uv.y;
+}
+
 void main() {
   vec2 st = gl_FragCoord.xy / u_fragRes.xy; // 0 -> 1
   const float HALF_VIEWPORT = 0.5;
   const float WIDTH = 0.3;
 
-  // find aspect ratio for both directions
-  vec2 aspectRatio = vec2(u_fragRes.x / u_fragRes.y, u_fragRes.y / u_fragRes.x);
-
-  // find diagonal offset for top and right border angle
-  vec2 diagDelta = aspectRatio - 1.0;
-
-  // find width of border for each side, based on mouse position
-  vec4 width = vec4(
-    1.0 - u_mousePos.y,
-    (1.0 - u_mousePos.x) * aspectRatio.y,
-    1.0 + u_mousePos.y,
-    (1.0 + u_mousePos.x) * aspectRatio.y
-  ) * WIDTH;
-
   vec3 purple = vec3(0.6, 0.0, 0.6);
   vec3 black = vec3(0.0);
   vec3 color = black;
 
-  // for( float i = 0.0; i <= 5.0; i++ ) {
-  //   vec4 offset = width * i * 0.7;
-    
-  //   color += rectOutline(
-  //     st,
-  //     aspectRatio,
-  //     diagDelta,
-  //     width,
-  //     offset,
-  //     purple * pow(i * 0.5, 4.0),
-  //     black
-  //   );
-  // }
-
-  vec4 offset = width * 0.0 * 0.7;
-
-  vec3 bb = mix(purple, black, step(0.1, st.y));
-
-  st = rotate2d(PI * 0.2) * st;
-
-  vec3 rb = mix(purple, black, step(0.01, st.y));
-
-  color = bb + rb;
-
-  // color += rectOutline(
-  //   st,
-  //   aspectRatio,
-  //   diagDelta,
-  //   width,
-  //   offset,
-  //   purple,
-  //   black
-  // );
+  color += vec3(mix(purple, black, box(st, vec2(0.9))));
+  // color += vec3(mix(purple, black, box(st, vec2(0.9))));
 
   gl_FragColor = vec4(color, 1.0);
 }
