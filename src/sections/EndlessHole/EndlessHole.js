@@ -7,14 +7,11 @@ import { createShader, createProgram } from '../../utils/helpers';
 
 class EndlessHole extends Component {
   componentDidMount() {
-    console.log('componentdidMount');
     this.windowWidth = document.documentElement.clientWidth;
     this.windowHeight = document.documentElement.clientHeight;
     const canvasPos = this.canvas.current.getBoundingClientRect();
     this.canvasCenterY = canvasPos.top + Math.floor(canvasPos.height / 2);
     this.canvasCenterX = canvasPos.left + Math.floor(canvasPos.width / 2);
-    console.log('compoenntDidmiunt, canvas x: ', this.canvasCenterX);
-    console.log('compoenntDidmiunt, canvas y: ', this.canvasCenterY);
     this.largestWidth = Math.max(this.windowWidth - this.canvasCenterX, this.canvasCenterX);
     this.largestHeight = Math.max(this.windowHeight - this.canvasCenterY, this.canvasCenterY);
     this.minMouseX = 1 / this.largestWidth * this.canvasCenterX;
@@ -109,7 +106,6 @@ class EndlessHole extends Component {
   canvas = React.createRef();
 
   render() {
-    console.log('render');
     return <canvas ref={this.canvas} style={{ width: '100%', height: '100%', minHeight: '150px' }} />;
   }
 }

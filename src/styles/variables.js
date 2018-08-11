@@ -14,6 +14,7 @@ export const main = {
 
 export const colors = {
   CODE_BACKGROUND: '#d8d8d8',
+  GREY: '#afafaf',
   CODE_COLOR: '#634dd6',
   BACKGROUND_COLOR: '#FAFAFA',
   CLOSED_TV: '#ddd',

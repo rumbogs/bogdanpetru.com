@@ -10,15 +10,29 @@ export default {
     content: (
       <div>
         <p>
+          <em>
+            [Edit {new Date('2018-11-08').toLocaleString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}]:{' '}
+            The site is build using plain <a href="https://reactjs.org/">React</a> instead, Gatsby provided too many
+            constraints in dynamically rendering content and I needed more control over the pages and what actually goes
+            in the canvas element. I lose great blogging functionality like posts structure and layout generation that
+            Gatsby provides, but gain access to the bits and pieces of content handling.
+          </em>
+        </p>
+        <p>
           After much thought, I decided it&apos;s time I had a more complete web presence. I needed to have a place to
           experiment different stuff and write notes for my future self.
         </p>
         <p>
-          The site is built using <a href="https://www.gatsbyjs.org/">Gatsby.js</a> which recently arrived at 1.0 and
-          makes it a really nice choice for blogs and small content first websites. It can take a bit of time to get
-          used to the architecture, but the documentation has a lot of examples and if something&apos;s missing, you can
-          always check the <a href="https://github.com/gatsbyjs/gatsby/tree/master/examples">repository</a> for more
-          information.
+          <span style={{ textDecoration: 'line-through' }}>
+            The site is built using{' '}
+            <a style={{ textDecoration: 'line-through' }} href="https://www.gatsbyjs.org/">
+              Gatsby.js
+            </a>
+          </span>{' '}
+          which recently arrived at 1.0 and makes it a really nice choice for blogs and small content first websites. It
+          can take a bit of time to get used to the architecture, but the documentation has a lot of examples and if
+          something&apos;s missing, you can always check the{' '}
+          <a href="https://github.com/gatsbyjs/gatsby/tree/master/examples">repository</a> for more information.
         </p>
         <p>
           It&apos;s hosted on <a href="https://www.netlify.com/">Netlify</a>, which has a really comprehensive free

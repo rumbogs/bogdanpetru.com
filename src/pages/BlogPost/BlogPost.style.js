@@ -59,12 +59,22 @@ export const ContentWrapper = styled.div`
   margin: 0 auto;
   max-width: 500px;
 
+  h1 {
+    margin-bottom: 0;
+  }
+
   p {
     font-size: 18px;
 
     ${media.s`
       font-size: ${fontSizes.s};
     `};
+  }
+
+  > p {
+    margin-top: 0;
+    font-size: 14px;
+    color: ${colors.GREY};
   }
 `;
 

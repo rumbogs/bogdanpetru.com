@@ -19,7 +19,7 @@ class LatestPost extends Component { // eslint-disable-line
       <LatestPostWrapper innerRef={this.props.bindLatestPostRef}>
         <Content>
           <h1>{post.title}</h1>
-          <p>{post.date}</p>
+          <p>{new Date(post.date).toLocaleString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
           {isDesktop ? (
             <SeeMoreBtn onClick={this.handleClick}>
               <p>{post.excerpt} &gt;&gt;&gt;</p>

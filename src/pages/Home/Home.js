@@ -178,6 +178,7 @@ class Home extends Component {
 
   render() {
     const { handleRestartAnimation, scrollbarWidth, animating } = this.props;
+    console.log('animating: ', animating);
     const { overlayPost } = this.state;
     const { animation, isHidden } = overlayPost;
     const overlayPostDimensions = {
@@ -237,6 +238,9 @@ class Home extends Component {
             >
               <CloseBtn>&lt;&lt;&lt; home</CloseBtn>
               <h1>{latestPost.title}</h1>
+              <p>
+                {new Date(latestPost.date).toLocaleString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+              </p>
               {latestPost.content}
             </PostOverlayContentWrapper>
           </PostOverlay>

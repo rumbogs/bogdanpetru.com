@@ -15,7 +15,7 @@ class RecentPosts extends Component { // eslint-disable-line
       <RecentPostsWrapper innerRef={this.props.bindRecentPostsRef}>
         <h3>Recent Posts</h3>
         <RecentPostsList>
-          {posts &&
+          {posts && posts.length > 0 ? (
             posts.map(post => (
               <li key={post.node.fields.slug}>
                 <span>
@@ -23,7 +23,10 @@ class RecentPosts extends Component { // eslint-disable-line
                 </span>
                 <button onClick={this.handleClick(post.node.fields.slug)}>{post.node.frontmatter.title}</button>
               </li>
-            ))}
+            ))
+          ) : (
+            <p>Coming soon...</p>
+          )}
         </RecentPostsList>
       </RecentPostsWrapper>
     );

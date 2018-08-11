@@ -33,7 +33,7 @@ class BlogPost extends Component {
   render() {
     const { post } = this.state;
     const { scrollbarWidth } = this.props;
-    const { title, content } = post;
+    const { title, content, date } = post;
     return title.length > 0 ? (
       <Wrapper scrollbarWidth={scrollbarWidth}>
         <Helmet title={title} />
@@ -44,6 +44,7 @@ class BlogPost extends Component {
             </CloseBtn>
             <ContentWrapper>
               <h1>{title}</h1>
+              <p>{new Date(date).toLocaleString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
               {content}
             </ContentWrapper>
           </BlogPostWrapper>

@@ -229,6 +229,16 @@ const PostOverlayContentWrapper = styled.div`
   animation-fill-mode: forwards;
   animation-delay: ${({ animationDelay }) => animationDelay};
 
+  h1 {
+    margin-bottom: 0;
+  }
+
+  > p {
+    margin-top: 0;
+    font-size: 14px;
+    color: ${colors.GREY};
+  }
+
   ${media.s`
     padding: 30px;
   `};

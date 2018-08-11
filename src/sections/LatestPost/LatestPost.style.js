@@ -10,7 +10,7 @@ export const LatestPostWrapper = styled.div`
 `;
 
 export const Content = styled.div`
-  padding: 2em;
+  padding: 2em 2em 3em;
 
   a::before {
     display: none;
@@ -18,6 +18,18 @@ export const Content = styled.div`
 
   a:hover {
     color: ${colors.FONT_BASE};
+  }
+
+  h1 {
+    margin-bottom: 0;
+  }
+
+  > p {
+    margin-top: 0;
+    margin-bottom: 2em;
+    display: block;
+    font-size: 14px;
+    color: ${colors.GREY};
   }
 `;
 
