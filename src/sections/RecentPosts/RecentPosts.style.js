@@ -14,7 +14,16 @@ export const RecentPostsList = styled.ul`
   margin: 0;
   padding: 0;
 
-  li {
-    font-size: 16px;
+  button {
+    border: none;
+    text-align: left;
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 14px;
+    span {
+      font-size: 12px;
+    }
   }
 `;

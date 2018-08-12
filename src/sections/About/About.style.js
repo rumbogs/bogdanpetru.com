@@ -23,7 +23,7 @@ export const AboutWrapper = styled.div`
 `;
 
 export const HoverWrapper = styled.div.attrs({
-  style: ({ flipped, rotateX, rotateY }) => ({
+  style: ({ rotateX, rotateY }) => ({
     transform: `rotateX(${-rotateX * 5}deg) rotateY(${rotateY * 5}deg)`,
   }),
 })`

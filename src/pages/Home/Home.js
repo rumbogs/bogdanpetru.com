@@ -24,10 +24,16 @@ import {
   CloseBtn,
 } from './Home.style';
 
-const latestPost = Object.keys(posts).reduce(
-  (post, slug) => (new Date(posts[slug].date).getTime() > new Date(post.date).getTime() ? posts[slug] : post),
-  { date: 0 }
-);
+const orderedPosts = Object.keys(posts)
+  .reduce((arr, slug) => arr.concat(posts[slug]), [])
+  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+const latestPost = orderedPosts[0];
+
+// const latestPost = Object.keys(posts).reduce(
+//   (post, slug) => (new Date(posts[slug].date).getTime() > new Date(post.date).getTime() ? posts[slug] : post),
+//   { date: 0 }
+// );
 
 class Home extends Component {
   constructor(props) {
@@ -36,6 +42,7 @@ class Home extends Component {
     this.state = {
       overlayPost: {
         isHidden: true,
+        slug: '',
         animating: '',
         width: 0,
         height: 0,
@@ -60,6 +67,7 @@ class Home extends Component {
       this.state = {
         overlayPost: {
           ...this.state.overlayPost,
+          slug: `/post/${props.withPostOverlay[0]}`,
           isHidden: false,
           width: `calc(100% - 100px)`,
           height: `calc(100% - 100px)`,
@@ -75,7 +83,7 @@ class Home extends Component {
 
     if (this.props.withPostOverlay.length > 0 && isDesktop) {
       const { latestPostRef, recentPostsRef } = this;
-      const isLastPost = true; // TODO: change to correct check
+      const isLastPost = this.props.withPostOverlay[0] === orderedPosts[0].slug;
       let width = 0;
       let height = 0;
       let x = 0;
@@ -97,6 +105,7 @@ class Home extends Component {
       this.setState(({ overlayPost }) => ({
         overlayPost: {
           ...overlayPost,
+          slug: `/post/${this.props.withPostOverlay[0]}`,
           animation: shrinkFadeOut,
           animating: 'out',
           startWidth: `calc(100% - 100px)`,
@@ -137,6 +146,7 @@ class Home extends Component {
       {
         overlayPost: {
           ...this.state.overlayPost,
+          slug,
           isHidden: false,
           width: `${width}px`,
           height: `${height}px`,
@@ -156,6 +166,7 @@ class Home extends Component {
         this.setState(({ overlayPost }) => ({ // eslint-disable-line
           overlayPost: {
             ...overlayPost,
+            slug,
             animation: fadeInExpand,
             animating: 'in',
             startWidth: `${width}px`,
@@ -177,14 +188,21 @@ class Home extends Component {
   bindLatestPostRef = node => this.latestPostRef = node // eslint-disable-line
 
   render() {
-    const { handleRestartAnimation, scrollbarWidth, animating } = this.props;
-    console.log('animating: ', animating);
+    const {
+      handleRestartAnimation,
+      scrollbarWidth,
+      // animating
+    } = this.props;
     const { overlayPost } = this.state;
     const { animation, isHidden } = overlayPost;
     const overlayPostDimensions = {
       ...overlayPost,
       isHidden,
     };
+
+    const overlayPostData = overlayPost.slug
+      ? orderedPosts.find(post => post.slug === overlayPost.slug.split('/').slice(-1)[0])
+      : {};
 
     return (
       <Wrapper scrollbarWidth={scrollbarWidth}>
@@ -204,7 +222,11 @@ class Home extends Component {
             >
               <EndlessHole />
             </CanvasScreenOverlay>
-            <RecentPosts bindRecentPostsRef={this.bindRecentPostsRef} onShowOverlayPost={this.handleShowOverlayPost} />
+            <RecentPosts
+              bindRecentPostsRef={this.bindRecentPostsRef}
+              onShowOverlayPost={this.handleShowOverlayPost}
+              posts={orderedPosts.slice(1)}
+            />
             <FollowingPhotoWithCanvasEffects onRestartAnimation={handleRestartAnimation} />
             <CanvasScreenOverlay
               animating={false}
@@ -237,11 +259,15 @@ class Home extends Component {
               animationDelay={animation === fadeInExpand ? '.2s' : '0s'}
             >
               <CloseBtn>&lt;&lt;&lt; home</CloseBtn>
-              <h1>{latestPost.title}</h1>
+              <h1>{overlayPostData.title}</h1>
               <p>
-                {new Date(latestPost.date).toLocaleString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                {new Date(overlayPostData.date).toLocaleString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                })}
               </p>
-              {latestPost.content}
+              {overlayPostData.content}
             </PostOverlayContentWrapper>
           </PostOverlay>
         )}

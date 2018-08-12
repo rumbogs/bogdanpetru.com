@@ -24,6 +24,16 @@ export const Content = styled.div`
     margin-bottom: 0;
   }
 
+  h4 {
+    position: relative;
+    font-size: 12px;
+    color: ${colors.CLOSED_TV};
+    margin: 0;
+    font-family: ${fontFamily.FONT_KARLA};
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
   > p {
     margin-top: 0;
     margin-bottom: 2em;

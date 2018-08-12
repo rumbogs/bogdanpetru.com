@@ -25,7 +25,7 @@ void main() {
   vec2 st = gl_FragCoord.xy / u_fragRes.xy; // 0 -> 1
   const float WIDTH = 0.1;
 
-  vec3 purple = vec3(0.0, 0.05, 0.05);
+  vec3 purple = vec3(0.094, 0.094, 0.094);
   vec3 black = vec3(0.0);
   vec3 color = black;
 

@@ -27,7 +27,7 @@ const CanvasLoadEffectsWrapper = styled.div`
 
     &:disabled:hover {
       background-color: ${colors.BACKGROUND_COLOR};
-      color: ${colors.FONT_BASE};
+      color: gray;
     }
   }
 `;
