@@ -1,4 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
+import { Link } from 'react-router-dom';
+
+import { sizes } from '../../styles/variables';
 
 import { RecentPostsWrapper, RecentPostsList } from './RecentPosts.style';
 
@@ -9,8 +12,26 @@ class RecentPosts extends Component { // eslint-disable-line
     this.props.onShowOverlayPost('recentPostsRef', `/post/${slug}`);
   };
 
+  renderPostLink = post => (
+    <Fragment>
+      <span>
+        <em>
+          {new Date(post.date).toLocaleString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+          })}
+        </em>{' '}
+        -{' '}
+      </span>
+      {post.title}
+    </Fragment>
+  );
+
   render() {
     const { posts } = this.props;
+    const isDesktop = window.innerWidth > sizes.s;
+
     return (
       <RecentPostsWrapper innerRef={this.props.bindRecentPostsRef}>
         <h3>Recent Posts</h3>
@@ -18,15 +39,11 @@ class RecentPosts extends Component { // eslint-disable-line
           {posts && posts.length > 0 ? (
             posts.map(post => (
               <li key={post.slug}>
-                <button onClick={this.handleClick(post.slug)}>
-                  <span>
-                    <em>
-                      {new Date(post.date).toLocaleString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
-                    </em>{' '}
-                    -{' '}
-                  </span>
-                  {post.title}
-                </button>
+                {isDesktop ? (
+                  <button onClick={this.handleClick(post.slug)}>{this.renderPostLink(post)}</button>
+                ) : (
+                  <Link to={`/post/${post.slug}`}>{this.renderPostLink(post)}</Link>
+                )}
               </li>
             ))
           ) : (

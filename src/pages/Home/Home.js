@@ -188,8 +188,9 @@ class Home extends Component {
   bindLatestPostRef = node => this.latestPostRef = node // eslint-disable-line
 
   render() {
+    console.count('home.js');
     const {
-      handleRestartAnimation,
+      onRestartAnimation,
       scrollbarWidth,
       // animating
     } = this.props;
@@ -227,7 +228,7 @@ class Home extends Component {
               onShowOverlayPost={this.handleShowOverlayPost}
               posts={orderedPosts.slice(1)}
             />
-            <FollowingPhotoWithCanvasEffects onRestartAnimation={handleRestartAnimation} />
+            <FollowingPhotoWithCanvasEffects onRestartAnimation={onRestartAnimation} />
             <CanvasScreenOverlay
               animating={false}
               style={{

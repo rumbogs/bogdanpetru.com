@@ -78,7 +78,7 @@ class App extends Component {
                 component={routerProps => (
                   <Home
                     // {...this.props}
-                    handleRestartAnimation={this.handleRestartAnimation}
+                    onRestartAnimation={this.handleRestartAnimation}
                     withPostOverlay={withPostOverlay}
                     scrollbarWidth={this.scrollbarWidth}
                     animating={withCanvasAnimation}
@@ -112,7 +112,7 @@ class App extends Component {
                       component={routerProps => (
                         <Home
                           {...this.props}
-                          handleRestartAnimation={this.handleRestartAnimation}
+                          onRestartAnimation={this.handleRestartAnimation}
                           withPostOverlay={withPostOverlay}
                           scrollbarWidth={this.scrollbarWidth}
                           animating={withCanvasAnimation}

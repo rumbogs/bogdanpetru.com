@@ -48,6 +48,12 @@ h1, h2, h3, h4, h5, h6 {
   font-family: ${fontFamily.FONT_UOMO};
 }
 
+h4 {
+  ${media.s`
+    font-size: ${fontSizes.s};
+  `}
+}
+
 p {
   line-height: 1.5em;
   margin: 1.5em 0;

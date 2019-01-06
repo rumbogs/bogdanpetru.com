@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 import { colors } from '../../styles/variables';
+import media from '../../styles/breakpoints';
 
 export const Wrapper = styled.div`
   position: relative;
@@ -13,6 +14,10 @@ export const ClosedOverlay = styled.div`
   right: 0;
   bottom: 0;
   background-color: ${colors.CLOSED_TV};
+
+  ${media.s`
+    position: static;
+  `};
 
   p {
     display: block;

@@ -26,6 +26,10 @@ export const BlogPostWrapper = styled.div`
   h1 {
     font-size: 72px;
     margin-top: 0;
+
+    ${media.s`
+      font-size: 50px;
+    `};
   }
 
   h2,

@@ -19,43 +19,27 @@ class CanvasScreenOverlay extends Component {
     }
   }
 
+  componentWillUnmount() {
+    this.currentRAF.forEach(raf => cancelAnimationFrame(raf));
+    this.cleanup();
+  }
+
   timer = 0;
+  currentRAF = [];
 
   drawScene = () => {
-    this.gl.canvas.width = this.width;
-    this.gl.canvas.height = this.height;
-
-    this.gl.viewport(0, 0, this.width, this.height);
-
-    this.gl.clear(this.gl.COLOR_BUFFER_BIT);
-
-    this.gl.useProgram(this.program);
-
-    this.gl.enableVertexAttribArray(this.positionLocation);
-
-    this.gl.bufferData(
-      this.gl.ARRAY_BUFFER,
-      new Float32Array([0, 0, this.width, 0, 0, this.height, 0, this.height, this.width, 0, this.width, this.height]),
-      this.gl.STATIC_DRAW
-    );
-
-    const size = 2;
-    const type = this.gl.FLOAT;
-    const normalize = false;
-    const stride = 0;
-    const offset = 0;
-    this.gl.vertexAttribPointer(this.positionLocation, size, type, normalize, stride, offset);
-
     this.gl.uniform1f(this.timeLocation, this.timer);
     this.gl.uniform2f(this.resolutionLocation, this.width, this.height);
     this.gl.uniform2f(this.fragResolutionLocation, this.width, this.height);
 
     const primitiveType = this.gl.TRIANGLES;
     const count = 6;
-    this.gl.drawArrays(primitiveType, offset, count);
+    this.gl.drawArrays(primitiveType, this.offset, count);
 
     this.timer += 0.05;
-    requestAnimationFrame(this.drawScene.bind(this));
+    if (this.state.on) {
+      this.currentRAF = [...this.currentRAF.slice(-5), requestAnimationFrame(this.drawScene.bind(this))];
+    }
   };
 
   init = () => {
@@ -83,7 +67,40 @@ class CanvasScreenOverlay extends Component {
 
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, positionBuffer);
 
+    this.gl.canvas.width = this.width;
+    this.gl.canvas.height = this.height;
+
+    this.gl.viewport(0, 0, this.width, this.height);
+
+    this.gl.clear(this.gl.COLOR_BUFFER_BIT);
+
+    this.gl.useProgram(this.program);
+
+    this.gl.enableVertexAttribArray(this.positionLocation);
+
+    this.gl.bufferData(
+      this.gl.ARRAY_BUFFER,
+      new Float32Array([0, 0, this.width, 0, 0, this.height, 0, this.height, this.width, 0, this.width, this.height]),
+      this.gl.STATIC_DRAW
+    );
+
+    const size = 2;
+    const type = this.gl.FLOAT;
+    const normalize = false;
+    const stride = 0;
+    this.offset = 0;
+    this.gl.vertexAttribPointer(this.positionLocation, size, type, normalize, stride, this.offset);
+
     this.drawScene();
+  };
+
+  cleanup = () => {
+    // This should take care of "WARNING: Too many active WebGL contexts. Oldest context will be lost"
+    // it still triggers when switching pages
+    // too quickly and the contexts don't have
+    // enough time to cleanup
+    this.gl = null;
+    this.canvas = null;
   };
 
   canvas = React.createRef();

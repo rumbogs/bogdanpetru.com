@@ -14,6 +14,10 @@ export const RecentPostsList = styled.ul`
   margin: 0;
   padding: 0;
 
+  a:before {
+    display: none;
+  }
+
   button {
     border: none;
     text-align: left;

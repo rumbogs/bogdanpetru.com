@@ -54,9 +54,12 @@ class CanvasLoader extends Component {
   componentWillUnmount() {
     document.body.removeChild(this.canvasOverlayContainer);
     document.body.classList.remove('no-overflow');
+    this.currentRAF.forEach(raf => cancelAnimationFrame(raf));
+    this.cleanup();
   }
 
   canvas = React.createRef();
+  currentRAF = [];
 
   loadTexture = (width, height, children, postData) => {
     /* Create Image Texture from Screen */
@@ -191,9 +194,14 @@ class CanvasLoader extends Component {
 
   animate = () => {
     if (this.animating) {
-      requestAnimationFrame(this.animate.bind(this));
+      this.currentRAF = [...this.currentRAF.slice(-5), requestAnimationFrame(this.animate.bind(this))];
       this.renderCanvas();
     }
+  };
+
+  cleanup = () => {
+    this.gl = null;
+    this.canvas = null;
   };
 
   renderCanvas = () => {
@@ -215,18 +223,24 @@ class CanvasLoader extends Component {
     }
 
     // redraw scene
-    this.gl.drawArrays(this.gl.TRIANGLES, 0, 6);
+    if (this.gl) {
+      this.gl.drawArrays(this.gl.TRIANGLES, 0, 6);
+    }
   };
 
   render() {
-    const { width, height, children } = this.props;
+    const {
+      width,
+      height,
+      // children
+    } = this.props;
 
     return ReactDOM.createPortal(
       <CanvasWrapper width={width} height={height}>
         <canvas ref={this.canvas} width={getPowerOf2(width)} height={getPowerOf2(height)} />
-        <SVGWrapper height={height} width={width} scrollTop={window.pageYOffset}>
+        {/* <SVGWrapper height={height} width={width} scrollTop={window.pageYOffset}>
           {children}
-        </SVGWrapper>
+        </SVGWrapper> */}
       </CanvasWrapper>,
       this.canvasOverlayContainer
     );
