@@ -3,7 +3,7 @@ import React from 'react';
 import optiflowIcon from '../assets/ellipse_site@3x.png';
 
 export default {
-  title: 'Optiflow - a new native app',
+  title: 'Optiflow - a new mobile app',
   excerpt: 'Started working on a new React Native app, Optiflow',
   slug: 'about-optiflow',
   date: '2018-02-14',
