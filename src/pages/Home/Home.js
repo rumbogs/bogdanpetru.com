@@ -188,7 +188,6 @@ class Home extends Component {
   bindLatestPostRef = node => this.latestPostRef = node // eslint-disable-line
 
   render() {
-    console.count('home.js');
     const {
       onRestartAnimation,
       scrollbarWidth,
