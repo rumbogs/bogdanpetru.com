@@ -16,7 +16,7 @@ class LatestPost extends Component { // eslint-disable-line
     const isDesktop = window.innerWidth > sizes.s;
 
     return (
-      <LatestPostWrapper innerRef={this.props.bindLatestPostRef}>
+      <LatestPostWrapper innerRef={this.props.latestPostRef}>
         <Content>
           <h4>Latest post</h4>
           <h1>{post.title}</h1>

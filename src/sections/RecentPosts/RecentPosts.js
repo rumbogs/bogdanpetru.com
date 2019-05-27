@@ -33,7 +33,7 @@ class RecentPosts extends Component { // eslint-disable-line
     const isDesktop = window.innerWidth > sizes.s;
 
     return (
-      <RecentPostsWrapper innerRef={this.props.bindRecentPostsRef}>
+      <RecentPostsWrapper ref={this.props.recentPostsRef}>
         <h3>Recent Posts</h3>
         <RecentPostsList>
           {posts && posts.length > 0 ? (

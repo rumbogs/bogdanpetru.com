@@ -19,20 +19,20 @@ export default styled.div`
   font-size: 20px;
   text-transform: uppercase;
 
-  @media only screen and (-webkit-min-device-pixel-ratio: 2) and (orientation: landscape) {
-    display: flex;
-    animation-name: flicker;
-  }
+  // @media only screen and (-webkit-min-device-pixel-ratio: 2) and (orientation: landscape) {
+  //   display: flex;
+  //   animation-name: flicker;
+  // }
 
-  @keyframes flicker {
-    0% {
-      color: #fff;
-    }
-    50% {
-      color: tomato;
-    }
-    100% {
-      color: #fff;
-    }
-  }
+  // @keyframes flicker {
+  //   0% {
+  //     color: #fff;
+  //   }
+  //   50% {
+  //     color: tomato;
+  //   }
+  //   100% {
+  //     color: #fff;
+  //   }
+  // }
 `;

@@ -90,15 +90,15 @@ class Home extends Component {
       let y = 0;
 
       if (isLastPost) {
-        width = latestPostRef.clientWidth + 4;
-        height = latestPostRef.clientHeight + 4;
-        x = latestPostRef.offsetLeft;
-        y = latestPostRef.offsetTop;
+        width = latestPostRef.current.clientWidth + 4;
+        height = latestPostRef.current.clientHeight + 4;
+        x = latestPostRef.current.offsetLeft;
+        y = latestPostRef.current.offsetTop;
       } else {
-        width = recentPostsRef.clientWidth + 4;
-        height = recentPostsRef.clientHeight + 4;
-        x = recentPostsRef.offsetLeft;
-        y = recentPostsRef.offsetTop;
+        width = recentPostsRef.current.clientWidth + 4;
+        height = recentPostsRef.current.clientHeight + 4;
+        x = recentPostsRef.current.offsetLeft;
+        y = recentPostsRef.current.offsetTop;
       }
 
       /* eslint-disable */
@@ -121,7 +121,7 @@ class Home extends Component {
       /* eslint-enable */
 
       const handler = () => {
-        this.postOverlayRef.removeEventListener('animationend', handler);
+        this.postOverlayRef.current.removeEventListener('animationend', handler);
         this.setState({
           overlayPost: {
             isHidden: true,
@@ -129,7 +129,7 @@ class Home extends Component {
         });
       };
 
-      this.postOverlayRef.addEventListener('animationend', handler);
+      this.postOverlayRef.current.addEventListener('animationend', handler);
     }
   }
 
@@ -156,12 +156,12 @@ class Home extends Component {
       },
       () => {
         const handler = () => {
-          this.postOverlayRef.removeEventListener('animationend', handler);
+          this.postOverlayRef.current.removeEventListener('animationend', handler);
           // in case of router navigate here
           history.push(slug);
         };
 
-        this.postOverlayRef.addEventListener('animationend', handler);
+        this.postOverlayRef.current.addEventListener('animationend', handler);
 
         this.setState(({ overlayPost }) => ({ // eslint-disable-line
           overlayPost: {
@@ -183,9 +183,9 @@ class Home extends Component {
     );
   };
 
-  bindPostOverlayRef = node => this.postOverlayRef = node // eslint-disable-line
-  bindRecentPostsRef = node => this.recentPostsRef = node // eslint-disable-line
-  bindLatestPostRef = node => this.latestPostRef = node // eslint-disable-line
+  postOverlayRef = React.createRef();
+  recentPostsRef = React.createRef();
+  latestPostRef = React.createRef();
 
   render() {
     const {
@@ -210,7 +210,7 @@ class Home extends Component {
           <GridWrapper>
             <LatestPost
               onShowOverlayPost={this.handleShowOverlayPost}
-              bindLatestPostRef={this.bindLatestPostRef}
+              latestPostRef={this.latestPostRef}
               post={latestPost}
             />
             <CanvasScreenOverlay
@@ -223,7 +223,7 @@ class Home extends Component {
               <EndlessHole />
             </CanvasScreenOverlay>
             <RecentPosts
-              bindRecentPostsRef={this.bindRecentPostsRef}
+              recentPostsRef={this.recentPostsRef}
               onShowOverlayPost={this.handleShowOverlayPost}
               posts={orderedPosts.slice(1)}
             />
@@ -235,7 +235,7 @@ class Home extends Component {
                 gridRow: 'auto / span 1',
               }}
             />
-            <About />
+            {/* <About /> */}
             <CanvasScreenOverlay
               animating={false}
               style={{
@@ -253,7 +253,7 @@ class Home extends Component {
           </GridWrapper>
         </BorderWrapper>
         {!isHidden && (
-          <PostOverlay {...overlayPostDimensions} innerRef={this.bindPostOverlayRef}>
+          <PostOverlay {...overlayPostDimensions} ref={this.postOverlayRef}>
             <PostOverlayContentWrapper
               animation={animation === fadeInExpand ? fadeIn : fadeOut}
               animationDelay={animation === fadeInExpand ? '.2s' : '0s'}

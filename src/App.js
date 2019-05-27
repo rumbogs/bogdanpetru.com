@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import { Route } from 'react-router-dom';
-import { injectGlobal } from 'styled-components';
+import { createGlobalStyle } from 'styled-components';
 
 import Home from './pages/Home/Home';
 import BlogPost from './pages/BlogPost/BlogPost';
@@ -14,6 +14,9 @@ import MobileLandscapeOverlay from './App.style';
 import CanvasLoader from './components/CanvasLoader/CanvasLoader';
 import ColorOverlay from './components/ColorOverlay/ColorOverlay';
 import { isIE, getScrollbarWidth } from './utils/helpers';
+
+// add global styles here to get them in the production server side rendering
+const GlobalStyle = createGlobalStyle`${globalStyles}`;
 
 class App extends Component {
   state = {
@@ -29,10 +32,7 @@ class App extends Component {
     const width = Math.max(body.offsetWidth, documentElement.clientWidth, documentElement.offsetWidth);
     this.setState({ height, width }) // eslint-disable-line
 
-    this.scrollbarWidth = getScrollbarWidth();
-
-    // add global styles here to get them in the production server side rendering
-    injectGlobal`${globalStyles}`; // eslint-disable-line
+    this.scrollbarWidth = getScrollbarWidth();    
   }
 
   componentWillReceiveProps(nextProps) {
@@ -65,6 +65,7 @@ class App extends Component {
           />
           <noscript innerHTML="<style>.no-js-overlay{display: none;}</style>" />
         </Helmet>
+        <GlobalStyle />
         <MobileLandscapeOverlay>
           <p>Congratulations, you have broken the Internet!</p>
         </MobileLandscapeOverlay>

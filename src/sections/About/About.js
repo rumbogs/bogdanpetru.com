@@ -98,18 +98,18 @@ class About extends Component {
     // cannot be throttled because the leave event is triggered
     // before the last mouseMove and the element doesn't revert
     // back to initial position
-    this.wrapper.addEventListener('mousemove', this.onMouseMove, false);
+    this.wrapper.current.addEventListener('mousemove', this.onMouseMove, false);
   };
 
   handleMouseLeave = () => {
-    this.wrapper.removeEventListener('mousemove', this.onMouseMove);
+    this.wrapper.current.removeEventListener('mousemove', this.onMouseMove);
     this.setState({
       rotateX: 0,
       rotateY: 0,
     });
   };
 
-  bindWrapperRef = node => this.wrapper = node // eslint-disable-line
+  wrapper = React.createRef();
 
   render() {
     const { frontPage, backPage, flipped, rotateX, rotateY } = this.state;
@@ -117,7 +117,7 @@ class About extends Component {
     return (
       <AboutWrapper
         onClick={this.handleClick}
-        innerRef={this.bindWrapperRef}
+        ref={this.wrapper}
         onFocus={this.handleFocus}
         onMouseEnter={this.handleMouseEnter}
         onMouseLeave={this.handleMouseLeave}
