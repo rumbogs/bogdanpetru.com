@@ -21,6 +21,10 @@ const getPowerOf2 = size => {
 };
 
 class CanvasLoader extends Component {
+  canvas = React.createRef();
+
+  currentRAF = [];
+
   constructor(props) {
     super(props);
 
@@ -57,9 +61,6 @@ class CanvasLoader extends Component {
     this.currentRAF.forEach(raf => cancelAnimationFrame(raf));
     this.cleanup();
   }
-
-  canvas = React.createRef();
-  currentRAF = [];
 
   loadTexture = (width, height, children, postData) => {
     /* Create Image Texture from Screen */

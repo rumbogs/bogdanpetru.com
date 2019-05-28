@@ -22,23 +22,34 @@ class App extends Component {
   state = {
     height: null,
     width: null,
-    withCanvasAnimation: 'pixelate',
+    withCanvasAnimation: '',
     withPostOverlay: '',
   };
+
+  contentWrapperRef = React.createRef();
 
   componentDidMount() {
     const { body, documentElement } = document;
     const height = Math.max(body.offsetHeight, documentElement.clientHeight, documentElement.offsetHeight);
+    console.log('TCL: App -> componentDidMount -> height', height);
     const width = Math.max(body.offsetWidth, documentElement.clientWidth, documentElement.offsetWidth);
     this.setState({ height, width }) // eslint-disable-line
-
-    this.scrollbarWidth = getScrollbarWidth();    
   }
 
   componentWillReceiveProps(nextProps) {
     const currentPath = this.props.location.pathname;
     if (currentPath.indexOf('post') >= 0 && nextProps.location.pathname === '/') {
       this.setState({ withPostOverlay: currentPath.split('/').slice(-1) });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { height, width } = this.state;
+    this.scrollbarWidth = getScrollbarWidth(this.contentWrapperRef.current);
+    if (!prevState.height && !prevState.width && (height && width)) {
+      this.setState({ // eslint-disable-line
+        withCanvasAnimation: 'pixelate',
+      });
     }
   }
 
@@ -69,7 +80,7 @@ class App extends Component {
         <MobileLandscapeOverlay>
           <p>Congratulations, you have broken the Internet!</p>
         </MobileLandscapeOverlay>
-        <div style={{ height: '100%' }}>
+        <div style={{ height: '100%' }} ref={this.contentWrapperRef}>
           {!isIE() && withCanvasAnimation && <ColorOverlay />}
           {height && width ? (
             <main style={{ height: '100%' }}>
@@ -99,34 +110,33 @@ class App extends Component {
                   </PostsContext.Consumer>
                 )}
               /> */}
-              {!isIE() &&
-                withCanvasAnimation && (
-                  <CanvasLoader
-                    height={height}
-                    width={width}
-                    type={withCanvasAnimation}
-                    onAnimationEnd={this.handleAnimationEnd}
-                  >
-                    <Route
-                      exact
-                      path="/"
-                      component={routerProps => (
-                        <Home
-                          {...this.props}
-                          onRestartAnimation={this.handleRestartAnimation}
-                          withPostOverlay={withPostOverlay}
-                          scrollbarWidth={this.scrollbarWidth}
-                          animating={withCanvasAnimation}
-                          {...routerProps}
-                        />
-                      )}
-                    />
-                    <Route
-                      path="/post/:slug"
-                      component={routerProps => <BlogPost scrollbarWidth={this.scrollbarWidth} {...routerProps} />}
-                    />
-                  </CanvasLoader>
-                )}
+              {!isIE() && withCanvasAnimation && (
+                <CanvasLoader
+                  height={height}
+                  width={width}
+                  type={withCanvasAnimation}
+                  onAnimationEnd={this.handleAnimationEnd}
+                >
+                  <Route
+                    exact
+                    path="/"
+                    component={routerProps => (
+                      <Home
+                        {...this.props}
+                        onRestartAnimation={this.handleRestartAnimation}
+                        withPostOverlay={withPostOverlay}
+                        scrollbarWidth={this.scrollbarWidth}
+                        animating={withCanvasAnimation}
+                        {...routerProps}
+                      />
+                    )}
+                  />
+                  <Route
+                    path="/post/:slug"
+                    component={routerProps => <BlogPost scrollbarWidth={this.scrollbarWidth} {...routerProps} />}
+                  />
+                </CanvasLoader>
+              )}
             </main>
           ) : (
             ''

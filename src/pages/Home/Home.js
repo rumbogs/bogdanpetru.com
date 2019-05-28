@@ -5,10 +5,10 @@ import CanvasScreenOverlay from '../../components/CanvasScreenOverlay/CanvasScre
 import LatestPost from '../../sections/LatestPost/LatestPost';
 import RecentPosts from '../../sections/RecentPosts/RecentPosts';
 import FollowingPhotoWithCanvasEffects from '../../sections/FollowingPhotoWithCanvasEffects/FollowingPhotoWithCanvasEffects';
-import About from '../../sections/About/About';
+// import About from '../../sections/About/About';
 import EndlessHole from '../../sections/EndlessHole/EndlessHole';
 
-import posts from '../../posts/';
+import posts from '../../posts';
 
 import { sizes } from '../../styles/variables';
 import {
@@ -36,6 +36,12 @@ const latestPost = orderedPosts[0];
 // );
 
 class Home extends Component {
+  postOverlayRef = React.createRef();
+
+  recentPostsRef = React.createRef();
+
+  latestPostRef = React.createRef();
+
   constructor(props) {
     super(props);
 
@@ -135,10 +141,16 @@ class Home extends Component {
 
   handleShowOverlayPost = (type, slug) => {
     const { history, scrollbarWidth } = this.props;
-    const width = this[type].clientWidth + 4;
-    const height = this[type].clientHeight + 4;
-    const x = this[type].offsetLeft;
-    const y = this[type].offsetTop;
+    console.log('TCL: handleShowOverlayPost -> scrollbarWidth', scrollbarWidth);
+    const { clientWidth, clientHeight, offsetLeft, offsetTop } = this[type].current;
+    const width = clientWidth + 4;
+    console.log('TCL: handleShowOverlayPost -> width', width);
+    const height = clientHeight + 4;
+    console.log('TCL: handleShowOverlayPost -> height', height);
+    const x = offsetLeft;
+    console.log('TCL: handleShowOverlayPost -> x', x);
+    const y = offsetTop;
+    console.log('TCL: handleShowOverlayPost -> y', y);
 
     window.scrollTo(0, 0);
 
@@ -182,10 +194,6 @@ class Home extends Component {
       }
     );
   };
-
-  postOverlayRef = React.createRef();
-  recentPostsRef = React.createRef();
-  latestPostRef = React.createRef();
 
   render() {
     const {

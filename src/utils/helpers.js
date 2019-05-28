@@ -72,7 +72,15 @@ export const isSafari = () =>
 export const isFirefox = () =>
   typeof navigator !== 'undefined' && navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
 
-export const getScrollbarWidth = () => {
+export const hasScrollBar = (contentRef = document.body) => contentRef.scrollHeight > window.innerHeight;
+
+export const getScrollbarWidth = contentRef => {
+  console.log('contentRef.scrollHeight', contentRef.scrollHeight);
+  console.log('window.innerHeight', window.innerHeight);
+  if (!hasScrollBar(contentRef)) {
+    console.log('0');
+    return 0;
+  }
   const outer = document.createElement('div');
   outer.style.visibility = 'hidden';
   outer.style.width = '100px';

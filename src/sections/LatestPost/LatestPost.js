@@ -12,11 +12,11 @@ class LatestPost extends Component { // eslint-disable-line
   };
 
   render() {
-    const { post } = this.props;
+    const { post, latestPostRef } = this.props;
     const isDesktop = window.innerWidth > sizes.s;
 
     return (
-      <LatestPostWrapper innerRef={this.props.latestPostRef}>
+      <LatestPostWrapper ref={latestPostRef}>
         <Content>
           <h4>Latest post</h4>
           <h1>{post.title}</h1>
