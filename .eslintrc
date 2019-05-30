@@ -54,6 +54,7 @@
         "printWidth": 120
       }
     ],
-    "react/prop-types": "off"
+    "react/prop-types": "off",
+    "consistent-return": "off"
   }
 }

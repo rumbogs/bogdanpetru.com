@@ -18,7 +18,7 @@ export const BlackBackground = styled.div`
 export const BlogPostWrapper = styled.div`
   position: relative;
   height: 100%;
-  overflow-y: scroll;
+  overflow-y: auto;
   padding: 36px 0; // 2em + 2 border width
   background-color: ${colors.BACKGROUND_COLOR};
   border: 2px solid ${colors.FONT_BASE};

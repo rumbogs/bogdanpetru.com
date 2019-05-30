@@ -206,6 +206,7 @@ class CanvasLoader extends Component {
   };
 
   renderCanvas = () => {
+    const { onAnimationEnd } = this.props;
     const duration = 10;
     const currentTime = new Date().getTime();
     this.timeValue = (currentTime - this.startTime) / 1000 + duration;
@@ -216,7 +217,7 @@ class CanvasLoader extends Component {
 
     if (this.pixelSizeValue === 0.0) {
       this.animating = false;
-      this.props.onAnimationEnd();
+      onAnimationEnd();
       // if (this.props.shouldRestart) {
       //   // if restarted from button, reset state in layout
       //   this.props.onStopAnimation();

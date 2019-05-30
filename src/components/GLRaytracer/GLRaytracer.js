@@ -1,29 +1,18 @@
 import React, { Component } from 'react';
 
-import vertexShaderSource from '../../shaders/endlessHole/vertexShader';
-import fragmentShaderSource from '../../shaders/endlessHole/fragmentShader';
-
 import { createShader, createProgram } from '../../utils/helpers';
+import vertexShaderSource from '../../shaders/glRaytracer/vertexShader';
+import fragmentShaderSource from '../../shaders/glRaytracer/fragmentShader';
+import { CanvasWrapper } from './GLRaytracer.style';
 
-class EndlessHole extends Component {
+class GLRaytracer extends Component {
   canvas = React.createRef();
 
   componentDidMount() {
     this.windowWidth = document.documentElement.clientWidth;
     this.windowHeight = document.documentElement.clientHeight;
-    const canvasPos = this.canvas.current.getBoundingClientRect();
-    this.canvasCenterY = canvasPos.top + Math.floor(canvasPos.height / 2);
-    this.canvasCenterX = canvasPos.left + Math.floor(canvasPos.width / 2);
-    this.largestWidth = Math.max(this.windowWidth - this.canvasCenterX, this.canvasCenterX);
-    this.largestHeight = Math.max(this.windowHeight - this.canvasCenterY, this.canvasCenterY);
-    this.minMouseX = (1 / this.largestWidth) * this.canvasCenterX;
-    this.minMouseY = (1 / this.largestHeight) * this.canvasCenterY;
 
     this.init();
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('mousemove', this.mouseMoveHandler);
   }
 
   drawScene = (x, y) => {
@@ -88,26 +77,15 @@ class EndlessHole extends Component {
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, positionBuffer);
 
     this.drawScene(0, 0);
-
-    window.addEventListener('mousemove', this.mouseMoveHandler);
-  };
-
-  mouseMoveHandler = e => {
-    const { pageX, pageY } = e;
-    const mouseX = (1 / this.largestWidth) * (pageX - this.canvasCenterX);
-    const mouseY = (1 / this.largestHeight) * (pageY - this.canvasCenterY);
-
-    this.drawScene(mouseX, Math.min(mouseY, 1.0));
-
-    // TODO: correct this thing
-    // setTimeout(() => {
-    //   window.removeEventListener('mousemove', handleMouseMove);
-    // }, 5000);
   };
 
   render() {
-    return <canvas ref={this.canvas} style={{ width: '100%', height: '100%', minHeight: '150px' }} />;
+    return (
+      <CanvasWrapper>
+        <canvas ref={this.canvas} width={this.windowWidth} height={this.windowHeight} />
+      </CanvasWrapper>
+    );
   }
 }
 
-export default EndlessHole;
+export default GLRaytracer;

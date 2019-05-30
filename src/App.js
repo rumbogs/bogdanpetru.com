@@ -31,13 +31,13 @@ class App extends Component {
   componentDidMount() {
     const { body, documentElement } = document;
     const height = Math.max(body.offsetHeight, documentElement.clientHeight, documentElement.offsetHeight);
-    console.log('TCL: App -> componentDidMount -> height', height);
     const width = Math.max(body.offsetWidth, documentElement.clientWidth, documentElement.offsetWidth);
     this.setState({ height, width }) // eslint-disable-line
   }
 
   componentWillReceiveProps(nextProps) {
-    const currentPath = this.props.location.pathname;
+    const { location } = this.props;
+    const currentPath = location.pathname;
     if (currentPath.indexOf('post') >= 0 && nextProps.location.pathname === '/') {
       this.setState({ withPostOverlay: currentPath.split('/').slice(-1) });
     }

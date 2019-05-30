@@ -29,7 +29,8 @@ const page2 = (
         href="https://qz.com/321920/the-problem-with-starchitect-designed-gravity-defying-buildings-is-that-they-fall-apart/"
       >
         see here
-      </a>).
+      </a>
+      ).
     </p>
   </div>
 );
@@ -59,18 +60,9 @@ class About extends Component {
     rotateY: 0,
   };
 
-  onMouseMove = e => {
-    e.preventDefault();
-    const { pageX, pageY } = e;
-    const { offsetHeight, offsetWidth, offsetLeft, offsetTop } = this.wrapper;
-    const originalX = pageX - offsetLeft;
-    const originalY = pageY - offsetTop;
-    const rotateY = originalX / offsetWidth * 2 - 1; // -1 < x < 1
-    const rotateX = originalY / offsetHeight * 2 - 1; // -1 < y < 1
-    this.setState({ rotateX, rotateY });
-  };
+  wrapper = React.createRef();
 
-  handleTransitionEnd = e => this.setState({ animating: false });
+  handleTransitionEnd = () => this.setState({ animating: false });
 
   handleClick = e => {
     e.preventDefault();
@@ -109,7 +101,16 @@ class About extends Component {
     });
   };
 
-  wrapper = React.createRef();
+  onMouseMove = e => {
+    e.preventDefault();
+    const { pageX, pageY } = e;
+    const { offsetHeight, offsetWidth, offsetLeft, offsetTop } = this.wrapper;
+    const originalX = pageX - offsetLeft;
+    const originalY = pageY - offsetTop;
+    const rotateY = (originalX / offsetWidth) * 2 - 1; // -1 < x < 1
+    const rotateX = (originalY / offsetHeight) * 2 - 1; // -1 < y < 1
+    this.setState({ rotateX, rotateY });
+  };
 
   render() {
     const { frontPage, backPage, flipped, rotateX, rotateY } = this.state;

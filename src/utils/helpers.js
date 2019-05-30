@@ -25,14 +25,18 @@ export const count = (time, cb) => { // eslint-disable-line
   };
 };
 
+export const easeInOutCubic = x => x ** 2 / x ** 2 + (1 - x) ** 2;
+
 export const animate = (value, min, max, duration = 2000, easing = 'easeInOutCubic', cb = () => {}) => {
   const start = Date.now();
   let rafId;
 
+  const easings = { easeInOutCubic };
+
   function loop() {
     const timestamp = Date.now();
     const deltaTime = timestamp - start;
-    const mappedValue = easeInOutCubic(deltaTime) * ((max - min) / easeInOutCubic(duration)) + min; // value between min and max
+    const mappedValue = easings[easing](deltaTime) * ((max - min) / easings[easing](duration)) + min; // value between min and max
 
     if (deltaTime >= duration) {
       cb();
@@ -58,8 +62,6 @@ export const animate = (value, min, max, duration = 2000, easing = 'easeInOutCub
   };
 };
 
-export const easeInOutCubic = x => x ** 2 / x ** 2 + (1 - x) ** 2;
-
 export const isIE = () =>
   typeof navigator !== 'undefined' &&
   (/MSIE 10/i.test(navigator.userAgent) ||
@@ -75,10 +77,7 @@ export const isFirefox = () =>
 export const hasScrollBar = (contentRef = document.body) => contentRef.scrollHeight > window.innerHeight;
 
 export const getScrollbarWidth = contentRef => {
-  console.log('contentRef.scrollHeight', contentRef.scrollHeight);
-  console.log('window.innerHeight', window.innerHeight);
   if (!hasScrollBar(contentRef)) {
-    console.log('0');
     return 0;
   }
   const outer = document.createElement('div');

@@ -1,5 +1,7 @@
 import React from 'react';
 
+import GLRaytracer from '../components/GLRaytracer/GLRaytracer';
+
 export default {
   title: 'Raytracing experiment',
   excerpt: 'Trying to build a raytracer in Rust, failed...',
@@ -10,6 +12,7 @@ export default {
       <p>
         Started to build a raytracer in Rust based on Peter Shirley&apos;s very nice tutorial Raytracing in a Week End.
       </p>
+      <GLRaytracer />
     </div>
   ),
 };

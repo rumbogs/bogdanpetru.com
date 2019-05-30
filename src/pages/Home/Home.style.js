@@ -115,7 +115,8 @@ const BorderWrapper = styled.div`
   animation-name: ${({ animating }) => {
     if (animating === 'in') {
       return fadeOut;
-    } else if (animating === 'out') {
+    }
+    if (animating === 'out') {
       return fadeIn;
     }
     return 'none';
@@ -153,7 +154,7 @@ const PostOverlay = styled.div`
   left: 0;
   background-color: ${colors.BACKGROUND_COLOR};
   border: 2px solid ${colors.FONT_BASE};
-  overflow-y: scroll;
+  overflow-y: auto;
   transform: translate3d(0, 0, 0);
   opacity: 0;
   width: ${({ width }) => width};
