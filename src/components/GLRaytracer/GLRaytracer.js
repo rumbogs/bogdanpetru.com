@@ -2,14 +2,12 @@ import React, { Component } from 'react';
 
 import { createShader, createProgram } from '../../utils/helpers';
 import { CanvasWrapper } from './GLRaytracer.style';
+import { main } from '../../styles/variables';
 
 class GLRaytracer extends Component {
   canvas = React.createRef();
 
   componentDidMount() {
-    this.windowWidth = document.documentElement.clientWidth;
-    this.windowHeight = document.documentElement.clientHeight;
-
     this.init();
   }
 
@@ -80,9 +78,11 @@ class GLRaytracer extends Component {
   };
 
   render() {
+    this.windowWidth = window.innerWidth - main.postPadding * 2;
+
     return (
       <CanvasWrapper>
-        <canvas ref={this.canvas} width={this.windowWidth} height={this.windowHeight} />
+        <canvas ref={this.canvas} width={this.windowWidth} height={this.windowWidth * 0.5} style={{ width: '100%' }} />
       </CanvasWrapper>
     );
   }

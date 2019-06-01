@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 
-import { fontSizes, colors } from '../../styles/variables';
+import { fontSizes, colors, main } from '../../styles/variables';
 import media from '../../styles/breakpoints';
 
 export const BlackBackground = styled.div`
   width: 100%;
-  padding: 50px;
+  padding: ${main.postPadding}px;
   overflow: hidden;
   height: 100vh;
 
@@ -60,14 +60,16 @@ export const CloseBtn = styled.div`
 `;
 
 export const ContentWrapper = styled.div`
-  margin: 0 auto;
-  max-width: 500px;
-
-  h1 {
-    margin-bottom: 0;
+  h1,
+  h2,
+  h3 {
+    margin: 0 auto;
+    max-width: 500px;
   }
 
   p {
+    margin: 0 auto;
+    max-width: 500px;
     font-size: 18px;
 
     ${media.s`
@@ -76,7 +78,8 @@ export const ContentWrapper = styled.div`
   }
 
   > p {
-    margin-top: 0;
+    margin: 0 auto;
+    max-width: 500px;
     font-size: 14px;
     color: ${colors.GREY};
   }

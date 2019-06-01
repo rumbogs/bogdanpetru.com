@@ -10,6 +10,7 @@ export const fontSizes = {
 
 export const main = {
   width: '25em',
+  postPadding: 50,
 };
 
 export const colors = {
