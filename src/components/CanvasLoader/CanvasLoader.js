@@ -9,8 +9,8 @@ import { isFirefox, createProgram, createShader } from '../../utils/helpers';
 import PostsContext from '../../contexts/PostsContext';
 
 import CanvasWrapper from './CanvasLoader.style';
-import vertexShaderSource from '../../shaders/main/vertexShader';
-import fragmentShaderSource from '../../shaders/main/fragmentShader';
+import vertexShaderSource from '../../shaders/main/vertexShader.glsl';
+import fragmentShaderSource from '../../shaders/main/fragmentShader.glsl';
 
 const getPowerOf2 = size => {
   let biggerSize = 1;

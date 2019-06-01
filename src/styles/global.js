@@ -1,5 +1,5 @@
-import { colors, fontSizes, fontFamily, main } from '../styles/variables';
-import media from '../styles/breakpoints';
+import { colors, fontSizes, fontFamily, main } from './variables';
+import media from './breakpoints';
 
 /* eslint-disable */
 export default `

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
-import vertexShaderSource from '../../shaders/endlessHole/vertexShader';
-import fragmentShaderSource from '../../shaders/endlessHole/fragmentShader';
+import vertexShaderSource from '../../shaders/endlessHole/vertexShader.glsl';
+import fragmentShaderSource from '../../shaders/endlessHole/fragmentShader.glsl';
 
 import { createShader, createProgram } from '../../utils/helpers';
 

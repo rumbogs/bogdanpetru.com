@@ -55,6 +55,10 @@
       }
     ],
     "react/prop-types": "off",
-    "consistent-return": "off"
+    "consistent-return": "off",
+    "global-require": "off",
+    "no-nested-ternary": "off",
+    "no-param-reassign": "off",
+    "react/destructuring-assignment": "off"
   }
 }

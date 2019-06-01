@@ -1,4 +1,3 @@
-export default `
 precision mediump float;
 
 uniform vec2 u_fragResolution;
@@ -15,4 +14,3 @@ void main() {
   float rnd = random(st);
   gl_FragColor = vec4(vec3(rnd), 1.0);
 }
-`;

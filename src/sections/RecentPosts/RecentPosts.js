@@ -40,7 +40,9 @@ class RecentPosts extends Component { // eslint-disable-line
             posts.map(post => (
               <li key={post.slug}>
                 {isDesktop ? (
-                  <button onClick={this.handleClick(post.slug)}>{this.renderPostLink(post)}</button>
+                  <button type="button" onClick={this.handleClick(post.slug)}>
+                    {this.renderPostLink(post)}
+                  </button>
                 ) : (
                   <Link to={`/post/${post.slug}`}>{this.renderPostLink(post)}</Link>
                 )}

@@ -1,14 +1,12 @@
-export default `
-uniform float time;
-uniform sampler2D texture;
+precision mediump float;
 
 uniform float u_pixelSize;
+uniform sampler2D texture;
 varying vec2 vUv;
 vec4 myTexture;
 
-void main(void) {
-  
-  if (u_pixelSize != 0.0) {
+void main() {
+   if (u_pixelSize != 0.0) {
     float pixels = 512.0;
     float dx = u_pixelSize * (1.0 / pixels);
     float dy = u_pixelSize * (1.0 / pixels);
@@ -21,4 +19,3 @@ void main(void) {
 
   gl_FragColor = vec4(myTexture.rgb, myTexture.a);
 }
-`;

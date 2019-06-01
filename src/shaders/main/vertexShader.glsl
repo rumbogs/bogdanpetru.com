@@ -1,10 +1,12 @@
-export default `
 attribute vec2 a_position;
+attribute vec2 a_texCoord;
 
 uniform vec2 u_resolution;
 
+varying vec2 vUv;
+
 void main() {
-   // convert the rectangle points from pixels to 0.0 to 1.0
+   // convert the rectangle from pixels to 0.0 to 1.0
    vec2 zeroToOne = a_position / u_resolution;
 
    // convert from 0->1 to 0->2
@@ -14,5 +16,8 @@ void main() {
    vec2 clipSpace = zeroToTwo - 1.0;
 
    gl_Position = vec4(clipSpace * vec2(1, -1), 0, 1);
+
+   // pass the texCoord to the fragment shader
+   // The GPU will interpolate this value between points.
+   vUv = a_texCoord;
 }
-`;

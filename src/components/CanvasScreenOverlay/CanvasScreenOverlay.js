@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
 import { createShader, createProgram } from '../../utils/helpers';
-import vertexShaderSource from '../../shaders/emptySection/noiseVertexShader';
-import fragmentShaderSource from '../../shaders/emptySection/noiseFragmentShader';
+import vertexShaderSource from '../../shaders/emptySection/noiseVertexShader.glsl';
+import fragmentShaderSource from '../../shaders/emptySection/noiseFragmentShader.glsl';
 
 import { Wrapper, ClosedOverlay } from './CanvasScreenOverlay.style';
 
@@ -10,6 +10,12 @@ class CanvasScreenOverlay extends Component {
   state = {
     on: !this.props.animating,
   };
+
+  timer = 0;
+
+  currentRAF = [];
+
+  canvas = React.createRef();
 
   componentDidMount() {
     if (!this.props.animating) {
@@ -23,9 +29,6 @@ class CanvasScreenOverlay extends Component {
     this.currentRAF.forEach(raf => cancelAnimationFrame(raf));
     this.cleanup();
   }
-
-  timer = 0;
-  currentRAF = [];
 
   drawScene = () => {
     this.gl.uniform1f(this.timeLocation, this.timer);
@@ -102,8 +105,6 @@ class CanvasScreenOverlay extends Component {
     this.gl = null;
     this.canvas = null;
   };
-
-  canvas = React.createRef();
 
   render() {
     const { children, style } = this.props;

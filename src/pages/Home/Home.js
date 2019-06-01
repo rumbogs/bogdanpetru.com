@@ -155,9 +155,9 @@ class Home extends Component {
     window.scrollTo(0, 0);
 
     this.setState(
-      {
+      state => ({
         overlayPost: {
-          ...this.state.overlayPost,
+          ...state.overlayPost,
           slug,
           isHidden: false,
           width: `${width}px`,
@@ -165,7 +165,7 @@ class Home extends Component {
           x: `${x}px`,
           y: `${y}px`,
         },
-      },
+      }),
       () => {
         const handler = () => {
           this.postOverlayRef.current.removeEventListener('animationend', handler);

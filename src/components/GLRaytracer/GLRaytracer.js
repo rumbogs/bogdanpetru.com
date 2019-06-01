@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 
 import { createShader, createProgram } from '../../utils/helpers';
-import vertexShaderSource from '../../shaders/glRaytracer/vertexShader';
-import fragmentShaderSource from '../../shaders/glRaytracer/fragmentShader';
 import { CanvasWrapper } from './GLRaytracer.style';
 
 class GLRaytracer extends Component {
@@ -54,6 +52,8 @@ class GLRaytracer extends Component {
 
   init = () => {
     const canvas = this.canvas.current;
+    const vertexShaderSource = require('../../shaders/glRaytracer/vertexShader.glsl');
+    const fragmentShaderSource = require('../../shaders/glRaytracer/fragmentShader.glsl');
     this.gl = canvas.getContext('webgl');
     if (!this.gl) {
       console.log('No GL');

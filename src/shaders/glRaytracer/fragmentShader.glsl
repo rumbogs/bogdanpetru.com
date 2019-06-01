@@ -1,4 +1,3 @@
-export default `
 precision mediump float;
 
 #define PI 3.14159265359
@@ -36,4 +35,3 @@ void main() {
 
   gl_FragColor = vec4(color, 1.0);
 }
-`;
