@@ -12,7 +12,7 @@ const FollowingPhotoWithCanvasEffects = ({ onRestartAnimation }) => {
         row={idx + 1 < 4 ? idx + 1 : 4}
         column={idx + 1 <= 4 ? 1 : idx + 1 - 3}
         disabled={idx !== 0}
-        key={type + Math.floor(Math.random() * 100)}
+        key={type + Math.floor(Math.random() * 1000)}
         idx={idx}
       />
     )
