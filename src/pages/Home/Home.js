@@ -21,8 +21,10 @@ import {
   fadeIn,
   fadeOut,
   PostOverlayContentWrapper,
-  CloseBtn,
+  // CloseBtn,
 } from './Home.style';
+
+import { CloseBtn, ContentWrapper } from '../BlogPost/BlogPost.style';
 
 const orderedPosts = Object.keys(posts)
   .reduce((arr, slug) => arr.concat(posts[slug]), [])
@@ -267,15 +269,17 @@ class Home extends Component {
               animationDelay={animation === fadeInExpand ? '.2s' : '0s'}
             >
               <CloseBtn>&lt;&lt;&lt; home</CloseBtn>
-              <h1>{overlayPostData.title}</h1>
-              <p>
-                {new Date(overlayPostData.date).toLocaleString('en-US', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
-                })}
-              </p>
-              {overlayPostData.content}
+              <ContentWrapper>
+                <h1>{overlayPostData.title}</h1>
+                <p>
+                  {new Date(overlayPostData.date).toLocaleString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}
+                </p>
+                {overlayPostData.content}
+              </ContentWrapper>
             </PostOverlayContentWrapper>
           </PostOverlay>
         )}

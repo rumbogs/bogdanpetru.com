@@ -225,7 +225,6 @@ const shrinkFadeOut = ({
 
 const PostOverlayContentWrapper = styled.div`
   padding-top: 2em;
-  max-width: 500px;
   margin: 0 auto;
   font-size: 18px;
   opacity: 0;
